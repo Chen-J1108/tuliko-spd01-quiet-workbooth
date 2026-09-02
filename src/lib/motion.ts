@@ -42,6 +42,7 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
   let activeIndex = -1;
   let initialFrame = 0;
   let settleFrame = 0;
+  let scrollFrame = 0;
   let hasPlayedIllumination = false;
   let hasPlayedHeroCopy = false;
   let hasPlayedProductIntro = false;
@@ -128,33 +129,33 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
         ? 1 - smoothstep(rangeProgress(progress, 0.24, 0.38))
         : 0;
       section.style.setProperty("--hero-copy-visibility", heroCopyVisibility.toFixed(5));
-      // Acoustic copy starts during the section handoff, because its assembled
-      // product state is already established by the structure reassembly. This
-      // removes the empty assembled-product hold without shortening either the
-      // exploded inspection or the acoustic comparison itself.
-      const isAcousticSection = section.id === "acoustic";
+      // Every product chapter starts reading as soon as it takes ownership of
+      // the persistent stage. A small negative start makes the incoming copy
+      // visible during the outgoing chapter's CSS crossfade, so a wheel tick
+      // never produces an unexplained product-only frame.
+      const isProductChapter = section.id !== "hero";
       const copyIn = smoothstep(rangeProgress(
         progress,
-        isAcousticSection ? -0.025 : 0.06,
-        isAcousticSection ? 0.04 : 0.18,
+        isProductChapter ? -0.025 : 0.06,
+        isProductChapter ? 0.04 : 0.18,
       ));
       const contentProgress = director.snapshot.reducedMotion
         ? 1
         : smoothstep(rangeProgress(
             progress,
-            isAcousticSection ? -0.045 : 0.035,
-            isAcousticSection ? 0.07 : 0.22,
+            isProductChapter ? -0.045 : 0.035,
+            isProductChapter ? 0.07 : 0.22,
           ));
       section.style.setProperty("--chapter-content-progress", contentProgress.toFixed(5));
       // Copy remains anchored to the product through the whole chapter. This
       // follows the reference site's continuous stage logic: the object changes
       // state while its explanation persists, then both hand off together.
       const interactionVisibility = section.id === "interaction"
-        ? copyIn * (1 - smoothstep(rangeProgress(progress, stackedLayout ? 0.83 : 0.85, 1)))
+        ? copyIn * (1 - smoothstep(rangeProgress(progress, stackedLayout ? 0.88 : 0.9, 0.985)))
         : 0;
       const copyVisibility = section.id === "interaction"
-          ? interactionVisibility
-        : copyIn * (1 - smoothstep(rangeProgress(progress, 0.82, 0.92)));
+        ? interactionVisibility
+        : copyIn;
       section.style.setProperty("--chapter-copy-visibility", copyVisibility.toFixed(5));
       section.style.setProperty("--interaction-content-visibility", interactionVisibility.toFixed(5));
       if (rect.top <= 1) baseIndex = index;
@@ -202,6 +203,12 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
     const localProgress = activeRect
       ? clamp01(-activeRect.top / Math.max(1, activeRect.height - viewportHeight))
       : 0;
+    // The chapter rail describes only the pinned product story—not the video,
+    // catalogue and consultation content below it. Each chapter starts exactly
+    // at its labelled stop and the cursor travels toward the following stop.
+    const storyProgress = baseIndex >= sections.length - 1
+      ? 1
+      : clamp01((baseIndex + localProgress) / Math.max(1, sections.length - 1));
     // The authoritative GLB is front-facing from the first frame. The local
     // three-quarter product image remains available solely as a load-error
     // fallback, so the hero no longer contradicts the direct product view.
@@ -244,6 +251,7 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
     director.setChapter(nextIndex, localProgress, pageProgress, narrative, structureProgress);
     root.dataset.chapter = CHAPTER_IDS[baseIndex];
     root.style.setProperty("--page-progress", pageProgress.toFixed(6));
+    root.style.setProperty("--story-progress", storyProgress.toFixed(6));
     root.style.setProperty("--chapter-progress", localProgress.toFixed(6));
     root.style.setProperty("--active-tease", activeTease.toFixed(6));
     root.style.setProperty("--state-overlap", transitionProgress.toFixed(6));
@@ -276,12 +284,12 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
       const travel = desktopLayout
         ? Math.max(0, progressTrack.clientHeight - progressCursor.offsetHeight)
         : Math.max(0, progressTrack.clientWidth - progressCursor.offsetWidth);
-      const distance = (travel * pageProgress).toFixed(2);
+      const distance = (travel * storyProgress).toFixed(2);
       progressCursor.style.transform = desktopLayout
         ? `translate3d(0, ${distance}px, 0)`
         : `translate3d(${distance}px, 0, 0)`;
     }
-    progressRail?.setAttribute("aria-label", `ページ進捗 ${Math.round(pageProgress * 100)}%`);
+    progressRail?.setAttribute("aria-label", `製品ストーリー進捗 ${Math.round(storyProgress * 100)}%`);
 
     if (activeIndex !== nextIndex) {
       activeIndex = nextIndex;
@@ -298,6 +306,19 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
     onUpdate: applyScrollState,
     onResize: applyScrollState,
   });
+
+  // ScrollObserver supplies lifecycle and resize integration, while the native
+  // event is the authoritative browsing clock. Some Chromium builds do not
+  // emit Anime.js observer updates for every unlinked wheel step; the rAF gate
+  // keeps all product, copy and navigation state on the same visual frame.
+  const scheduleScrollState = () => {
+    if (scrollFrame) return;
+    scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = 0;
+      applyScrollState();
+    });
+  };
+  window.addEventListener("scroll", scheduleScrollState, { passive: true });
 
   const pageResizeObserver = new ResizeObserver(() => {
     pageObserver.refresh();
@@ -614,7 +635,9 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
   return () => {
     if (initialFrame) cancelAnimationFrame(initialFrame);
     if (settleFrame) cancelAnimationFrame(settleFrame);
+    if (scrollFrame) cancelAnimationFrame(scrollFrame);
     document.removeEventListener("visibilitychange", handleVisibility);
+    window.removeEventListener("scroll", scheduleScrollState);
     window.removeEventListener("hashchange", handleHashChange);
     window.removeEventListener(PRODUCT_BOUNDARY_EVENT, syncHeroModelBoundary);
     productReference?.removeEventListener("load", applyScrollState);

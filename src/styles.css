@@ -1574,8 +1574,13 @@ main {
 
 .story-section {
   --chapter-scroll-height: 190lvh;
+  --chapter-handoff-overlap: 88lvh;
   position: relative;
   height: var(--chapter-scroll-height);
+  /* A sticky chapter finishes one viewport before its layout box ends. Pull
+     the next chapter forward by 88lvh, leaving one short 12lvh product-only
+     breath instead of an accidental full empty viewport. */
+  margin-bottom: calc(-1 * var(--chapter-handoff-overlap));
   scroll-margin-top: 0;
   pointer-events: none;
 }
@@ -1588,10 +1593,6 @@ main {
 .structure-section {
   /* Preserve the exploded inspection beat without leaving an assembled tail. */
   --chapter-scroll-height: 250lvh;
-  /* The chapter progress completes one viewport before the following section
-     would normally reach the sticky origin. Overlap that unused runway while
-     retaining a short 12lvh assembled-product breath before acoustic copy. */
-  margin-bottom: -88lvh;
 }
 
 .acoustic-section {
@@ -1605,6 +1606,10 @@ main {
 
 .interaction-section {
   --chapter-scroll-height: 175lvh;
+  /* The following film returns to normal document flow and already enters the
+     viewport as this sticky stage releases, so it must not inherit the story
+     chapter overlap. */
+  margin-bottom: 0;
 }
 
 .section-sticky {
@@ -3311,6 +3316,21 @@ main {
   border-right: 1px solid var(--line);
 }
 
+.progress-track::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: -1px;
+  width: 1px;
+  height: 100%;
+  background: color-mix(in oklch, var(--accent) 74%, var(--text));
+  transform: scaleY(var(--story-progress, 0));
+  transform-origin: center top;
+  transition: transform 80ms linear;
+  pointer-events: none;
+}
+
 .progress-cursor {
   position: absolute;
   top: 0;
@@ -3949,6 +3969,16 @@ main {
     align-items: flex-start;
     border-top: 1px solid var(--line);
     border-right: 0;
+  }
+
+  .progress-track::after {
+    top: -1px;
+    right: auto;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    transform: scaleX(var(--story-progress, 0));
+    transform-origin: left center;
   }
 
   .progress-cursor {
