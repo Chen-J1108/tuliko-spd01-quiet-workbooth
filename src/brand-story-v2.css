@@ -835,7 +835,7 @@
   .brand-story-footer,
   .brand-story-test-report { width: calc(100% - 32px); }
   .brand-story-hero-copy { min-height: 292px; padding: 20px 18px; }
-  .brand-story-hero h1 { max-width: 21rem; font-size: clamp(1.95rem, 8.35vw, 2.25rem); line-height: 1.05; }
+  .brand-story-hero h1 { max-width: 21rem; font-size: clamp(1.7rem, 7.3vw, 2.05rem); line-height: 1.08; }
   .brand-story-lead { margin-top: 18px; font-size: 15px; line-height: 1.62; }
   .brand-story-title-break { display: block; }
   .brand-story-product-plate { min-height: 390px; }
