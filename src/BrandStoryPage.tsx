@@ -24,15 +24,15 @@ const aboutChapters = [
 ] as const;
 
 const useCases = [
-  { id: "performance", label: "2002", title: "働き方から、家具を考える。", text: "関連製造基盤は杭州のオフィス家具事業から始まり、自社設計やショールームを通じて空間の使われ方を蓄積しました。", image: "/assets/video/spd01-structure-v5-poster.webp", alt: "現在の Tuliko SPD01 静音ワークブース製品確認映像" },
-  { id: "finish", label: "2008", title: "姿勢と仕事のリズムに応える。", text: "関連製造端では昇降デスクを開発し、家具を物としてではなく、姿勢や仕事の変化を支える道具として捉えてきました。", image: "/assets/scenes/scene-5.webp", alt: "現在の Tuliko ワークポッド配置CGイメージ" },
-  { id: "operation", label: "2009–16", title: "国際市場で、使われ方を学ぶ。", text: "海外展示会への参加を重ね、2014–2016年には国際オフィス家具市場へ展開したことが公開記録に残されています。", image: "/assets/scenes/scene-1.webp", alt: "現在の Tuliko ワークポッド配置CGイメージ" },
+  { id: "performance", label: "2002", title: "働き方から、家具を考える。", text: "関連製造基盤は杭州のオフィス家具事業から始まり、自社設計やショールームを通じて空間の使われ方を蓄積しました。", image: "/assets/brand-story/lineage-2002-concept-v1.webp", alt: "オフィス家具の設計基盤を表現した現代のコンセプトイメージ" },
+  { id: "finish", label: "2008", title: "姿勢と仕事のリズムから、空間へ。", text: "家具開発で培った人体工学と精密加工の知見を、静音ブースの寸法・操作性・設備配置へ展開。仕事の変化を支える空間として再構成しました。", image: "/assets/brand-story/lineage-2008-concept-v2.webp", alt: "静音ブースの原型を前に素材と構成を検討する開発チームのコンセプトイメージ" },
+  { id: "operation", label: "2009–16", title: "国際市場で、使われ方を学ぶ。", text: "海外展示会への参加を重ね、2014–2016年には国際オフィス家具市場へ展開したことが公開記録に残されています。", image: "/assets/brand-story/lineage-2009-2016-concept-v1.webp", alt: "国際市場での製品検討を表現した現代のコンセプトイメージ" },
 ] as const;
 
 const methodSteps = [
-  { step: "2019", phase: "電話ブースシリーズへ", detail: "関連製造端の公開記録に基づく製品開発", mediaLabel: "現在の製品確認映像／当時の記録画像ではありません", image: "/assets/video/spd01-structure-v5-poster.webp", alt: "現在の Tuliko SPD01 静音ワークブース製品確認映像" },
-  { step: "2020–21", phase: "モジュラー音響空間へ", detail: "電話・会議・ワークポッドへ製品領域を拡張", mediaLabel: "現在の配置イメージ（CG）", image: "/assets/scenes/scene-1.webp", alt: "現在の Tuliko 音響ワークポッド配置CGイメージ" },
-  { step: "現在", phase: "案件ごとの構成へ", detail: "構造・素材・寸法・換気・照明を確認", mediaLabel: "現在の配置イメージ（CG）", image: "/assets/scenes/scene-5.webp", alt: "現在の Tuliko ワークポッド配置CGイメージ" },
+  { step: "2019", phase: "電話ブースシリーズへ", detail: "関連製造端の公開記録に基づく製品開発", mediaLabel: "現代のコンセプトイメージ（生成）／当時の記録画像ではありません", image: "/assets/brand-story/phone-booth-2019-concept-v1.webp", alt: "2019年の電話ブース開発への転換を表現した現代のコンセプトイメージ" },
+  { step: "2020–21", phase: "モジュラー音響空間へ", detail: "電話・会議・ワークポッドへ製品領域を拡張", mediaLabel: "現代のコンセプトイメージ（生成）／当時の記録画像ではありません", image: "/assets/brand-story/modular-2020-2021-concept-v1.webp", alt: "複数サイズのモジュラー音響ワークスペースを表現した現代のコンセプトイメージ" },
+  { step: "現在", phase: "案件ごとの構成へ", detail: "構造・素材・寸法・換気・照明を確認", mediaLabel: "現在の構成イメージ（生成）／導入事例ではありません", image: "/assets/brand-story/configuration-current-concept-v2.webp", alt: "ワークブースの素材と構成確認を表現した生成イメージ" },
 ] as const;
 
 const heroProducts = [
@@ -556,7 +556,7 @@ export function BrandStoryPage() {
                   alt={currentUseCase.alt}
                   title={currentUseCase.title}
                   text={currentUseCase.text}
-                  mediaLabel={currentUseCase.id === "performance" ? "現在の製品確認映像／当時の記録画像ではありません" : "現在の配置イメージ（CG）／当時の記録画像ではありません"}
+                  mediaLabel="現代のコンセプトイメージ（生成）／当時の記録画像ではありません"
                   className="brand-story-switch-panel"
                 />
               </div>
@@ -620,9 +620,9 @@ export function BrandStoryPage() {
             <div className="brand-story-delivery-layout">
               <figure className="brand-story-process-visual" data-brand-reveal>
                 <video controls playsInline preload="metadata" poster="/assets/video/spd01-product-poster.png" aria-label="SPD01 製品確認映像">
-                  <source src="/assets/video/spd01-product-overview.mp4" type="video/mp4" />
+                  <source src="/assets/video/spd01-product-hero-seedance25-480p-v1.mp4" type="video/mp4" />
                 </video>
-                <figcaption>SPD01 / 製品確認映像 / 16:9 / 音声なし</figcaption>
+                <figcaption>SPD01 / 製品確認映像 / 16:9 / 環境音あり</figcaption>
               </figure>
               <ol className="brand-story-delivery-list">
                 {deliverySteps.map((step) => (
@@ -683,9 +683,9 @@ export function BrandStoryPage() {
             </div>
           </div>
           <VisualPanel
-            image="/assets/video/spd01-noise-to-quiet-poster.jpg"
-            alt="オープンオフィスで Tuliko SPD01 ワークポッドを利用しようとする人物"
-            title="SPD01 / 利用イメージ（CG）"
+            image="/assets/brand-story/japan-office-use-current-v3.webp"
+            alt="日本のオープンオフィスで Tuliko 静音ワークブースを利用する生成イメージ"
+            title="SPD01 / 利用イメージ（生成）"
             text="実際の導入事例ではありません。"
             className="brand-story-contact-visual"
           />
