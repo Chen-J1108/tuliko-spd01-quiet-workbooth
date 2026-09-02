@@ -724,7 +724,6 @@ const productFilms = [
     title: ["設置空間で見る、", "SPD01。"],
     description: "実際のオフィスに置いたときの大きさと内部空間を、映像で確認できます。",
     hlsSrc: "/assets/video/hls/space/index.m3u8",
-    fallbackSrc: "/assets/video/spd01-office-textfree-v3.mp4",
     poster: "/assets/video/spd01-office-textfree-v3-poster.webp",
   },
   {
@@ -735,7 +734,6 @@ const productFilms = [
     title: ["構造を、", "動きで見る。"],
     description: "天板、フレーム、ガラス、外装パネルが分かれていく順序から、組み替え式の構造を確認できます。",
     hlsSrc: "/assets/video/hls/structure/index.m3u8",
-    fallbackSrc: "/assets/video/spd01-structure-textfree-v1.mp4",
     poster: "/assets/video/spd01-structure-textfree-v1-poster.webp",
   },
   {
@@ -746,7 +744,6 @@ const productFilms = [
     title: ["静けさの中で、", "仕事に集中する。"],
     description: "オフィスの中で着席し、作業へ移るまでの距離感と使い心地を映像で確認できます。",
     hlsSrc: "/assets/video/hls/focus/index.m3u8",
-    fallbackSrc: "/assets/video/spd01-focus-textfree-v1.mp4",
     poster: "/assets/video/spd01-focus-textfree-v1-poster.webp",
   },
 ] as const;
@@ -763,14 +760,6 @@ function ProductFilmSection() {
     let disposed = false;
     let hlsInstance: import("hls.js").default | null = null;
 
-    const loadFallback = () => {
-      if (disposed) return;
-      hlsInstance?.destroy();
-      hlsInstance = null;
-      video.src = activeFilm.fallbackSrc;
-      video.load();
-    };
-
     const loadStream = async () => {
       if (video.canPlayType("application/vnd.apple.mpegurl")) {
         video.src = activeFilm.hlsSrc;
@@ -781,10 +770,7 @@ function ProductFilmSection() {
       try {
         const { default: Hls } = await import("hls.js");
         if (disposed) return;
-        if (!Hls.isSupported()) {
-          loadFallback();
-          return;
-        }
+        if (!Hls.isSupported()) return;
 
         const instance = new Hls({
           enableWorker: true,
@@ -794,11 +780,9 @@ function ProductFilmSection() {
         instance.loadSource(activeFilm.hlsSrc);
         instance.attachMedia(video);
         instance.on(Hls.Events.ERROR, (_event, data) => {
-          if (data.fatal) loadFallback();
+          if (data.fatal) instance.destroy();
         });
-      } catch {
-        loadFallback();
-      }
+      } catch { /* The poster remains visible when HLS is unavailable. */ }
     };
 
     void loadStream();
@@ -810,7 +794,7 @@ function ProductFilmSection() {
       video.removeAttribute("src");
       video.load();
     };
-  }, [activeFilm.fallbackSrc, activeFilm.hlsSrc]);
+  }, [activeFilm.hlsSrc]);
 
   useEffect(() => {
     const video = videoRef.current;
