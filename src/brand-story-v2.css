@@ -837,7 +837,7 @@
   .brand-story-hero-copy { min-height: 292px; padding: 20px 18px; }
   .brand-story-hero h1 { max-width: 21rem; font-size: clamp(1.95rem, 8.35vw, 2.25rem); line-height: 1.05; }
   .brand-story-lead { margin-top: 18px; font-size: 15px; line-height: 1.62; }
-  .brand-story-title-break { display: none; }
+  .brand-story-title-break { display: block; }
   .brand-story-product-plate { min-height: 390px; }
   .brand-story-product-plate img { padding: 96px 5% 70px; }
   .brand-story-product-meta { top: 78px; left: 14px; width: 194px; padding: 10px 11px; }
@@ -914,7 +914,8 @@
   .brand-story-project-slot .brand-story-project-visual { min-height: 430px; }
   .brand-story-company dl > div { grid-template-columns: 1fr; gap: 7px; }
   .brand-story-company-report { grid-template-columns: 1fr; min-height: 0; }
-  .brand-story-company-report > img { height: auto; aspect-ratio: 5 / 7; }
+  .brand-story-company-report figcaption { order: 1; }
+  .brand-story-company-report > img { order: 2; height: auto; aspect-ratio: 5 / 7; }
   .brand-story-close { min-height: 620px; }
   .brand-story-close h2 { font-size: clamp(2.45rem, 10vw, 3.35rem); line-height: .98; }
   .brand-story-close-actions { grid-template-columns: 1fr; }
