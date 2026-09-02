@@ -30,10 +30,19 @@ const chapters: Array<{ id: ChapterId; short: string; label: string }> = [
   { id: "interaction", short: "操作", label: "インタラクション" },
 ];
 
+const chapterSequence = Object.fromEntries(
+  chapters.map((chapter, index) => [
+    chapter.id,
+    {
+      index: String(index + 1).padStart(2, "0"),
+      label: chapter.short,
+    },
+  ]),
+) as Record<ChapterId, { index: string; label: string }>;
+
 const chapterSignals = {
   structure: {
-    index: "01",
-    label: "構造",
+    ...chapterSequence.structure,
     facts: [
       { label: "主要部品", value: "10点" },
       { label: "組立", value: "順序" },
@@ -41,8 +50,7 @@ const chapterSignals = {
     ],
   },
   acoustic: {
-    index: "02",
-    label: "遮音",
+    ...chapterSequence.acoustic,
     facts: [
       { label: "入力", value: "外側" },
       { label: "境界", value: "固定ガラス" },
@@ -50,8 +58,7 @@ const chapterSignals = {
     ],
   },
   modular: {
-    index: "03",
-    label: "構成",
+    ...chapterSequence.modular,
     facts: [
       { label: "構成", value: "5分類" },
       { label: "移設", value: "再構成" },
@@ -59,8 +66,7 @@ const chapterSignals = {
     ],
   },
   interaction: {
-    index: "04",
-    label: "使いやすさ",
+    ...chapterSequence.interaction,
     facts: [
       { label: "入室", value: "動線" },
       { label: "作業", value: "デスク" },
@@ -560,7 +566,7 @@ function ChapterSignal({
     <p className="chapter-sequence" aria-label={`製品ストーリー ${index} ${label}`}>
       <span>{index}</span>
       <strong>{label}</strong>
-      <i>04</i>
+      <i>{String(chapters.length).padStart(2, "0")}</i>
     </p>
   );
 }
@@ -1428,7 +1434,7 @@ export function App() {
               <h2 id="interaction-title">使う位置を、<br />ひと目で。</h2>
               <p className="chapter-summary">
                 <strong>扉、デスク、照明の位置関係を正面から確認。</strong>
-                <span>扉、デスク、照明の位置関係を正面から確認できます。</span>
+                <span>入室から着席、作業までの動線をひと目で確かめられます。</span>
               </p>
               <ChapterSignalFacts facts={chapterSignals.interaction.facts} />
             </div>
