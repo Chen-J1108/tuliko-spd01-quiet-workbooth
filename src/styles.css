@@ -416,7 +416,7 @@ a {
 
 .app[data-chapter="structure"] .webgl-mount,
 .app[data-chapter="structure"] .structure-guides {
-  transform: translate3d(0, 50px, 0);
+  transform: translate3d(0, var(--structure-stage-shift-y, 50px), 0);
 }
 
 .webgl-stage.is-loaded .webgl-reference {

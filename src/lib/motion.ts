@@ -215,6 +215,11 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
       * (1 - smoothstep(rangeProgress(heroProgress, 0.94, 0.99)));
     const narrative = baseIndex + transitionProgress;
     const structureProgress = sectionProgresses[1] ?? 0;
+    // The exploded inspection needs a lower, header-safe stage. Once the
+    // booth reassembles, return it to the acoustic chapter's vertical datum
+    // so the product does not jump between two consecutive assembled views.
+    const structureReassembly = smoothstep(rangeProgress(structureProgress, 0.84, 0.94));
+    const structureStageShiftY = 50 * (1 - structureReassembly);
     const guideEnter = smoothstep(rangeProgress(structureProgress, 0.28, 0.32));
     // Keep the guide layer available for a sparse second annotation pass
     // during the spatial inspection. Individual cues still guarantee only
@@ -235,6 +240,7 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
     root.style.setProperty("--hero-detail-visibility", heroDetailVisibility.toFixed(6));
     root.style.setProperty("--structure-guide-visibility", guideVisibility.toFixed(6));
     root.style.setProperty("--structure-guide-progress", structureProgress.toFixed(6));
+    root.style.setProperty("--structure-stage-shift-y", `${structureStageShiftY.toFixed(2)}px`);
     root.style.setProperty("--stage-center-x", `${stageCenter.toFixed(3)}%`);
     syncHeroProductBoundary();
 
