@@ -2376,6 +2376,55 @@ main {
   object-fit: contain;
 }
 
+.product-film-placeholder {
+  width: 100%;
+  height: 100%;
+  padding: 72px clamp(300px, 27vw, 430px) 72px clamp(390px, 35vw, 560px);
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(90deg, rgb(var(--rgb-shadow) / 0.14), transparent 28%, transparent 72%, rgb(var(--rgb-shadow) / 0.14)),
+    var(--page-deep);
+}
+
+.product-film-placeholder-card {
+  width: min(460px, 100%);
+  min-height: 240px;
+  padding: 36px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgb(var(--rgb-paper) / 0.24);
+  background: rgb(var(--rgb-shadow) / 0.22);
+  color: var(--text);
+  text-align: center;
+}
+
+.product-film-placeholder-card > span {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+}
+
+.product-film-placeholder-card > strong {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.5vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.product-film-placeholder-card > p {
+  margin: 16px 0 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
 .product-film-caption {
   position: absolute;
   z-index: 4;
@@ -3929,6 +3978,16 @@ main {
   .product-film video {
     object-fit: cover;
     object-position: center;
+  }
+
+  .product-film-placeholder {
+    padding: 280px 24px 180px;
+  }
+
+  .product-film-placeholder-card {
+    width: min(100%, 420px);
+    min-height: 190px;
+    padding: 28px 20px;
   }
 
   .product-film-caption {

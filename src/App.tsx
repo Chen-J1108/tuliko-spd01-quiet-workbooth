@@ -715,38 +715,46 @@ function VideoPrelude({ onActiveChange }: { onActiveChange: (active: boolean) =>
   );
 }
 
-const productFilms = [
+type ProductFilm = {
+  id: string;
+  index: string;
+  label: string;
+  duration: string;
+  title: [string, string];
+  description: string;
+  hlsSrc: string | null;
+  poster?: string;
+};
+
+const productFilms: ProductFilm[] = [
   {
     id: "space",
     index: "01",
     label: "設置空間",
-    duration: "05 SEC",
+    duration: "準備中",
     title: ["設置空間で見る、", "SPD01。"],
-    description: "実際のオフィスに置いたときの大きさと内部空間を、映像で確認できます。",
-    hlsSrc: "/assets/video/hls/space/index.m3u8",
-    poster: "/assets/video/spd01-office-textfree-v3-poster.webp",
+    description: "設置空間の映像を追加するためのスロットです。映像は後日公開予定です。",
+    hlsSrc: null,
   },
   {
     id: "structure",
     index: "02",
     label: "構造",
-    duration: "05 SEC",
+    duration: "準備中",
     title: ["構造を、", "動きで見る。"],
-    description: "天板、フレーム、ガラス、外装パネルが分かれていく順序から、組み替え式の構造を確認できます。",
-    hlsSrc: "/assets/video/hls/structure/index.m3u8",
-    poster: "/assets/video/spd01-structure-textfree-v1-poster.webp",
+    description: "製品構造の映像を追加するためのスロットです。映像は後日公開予定です。",
+    hlsSrc: null,
   },
   {
     id: "focus",
     index: "03",
     label: "使用イメージ",
-    duration: "10 SEC",
+    duration: "準備中",
     title: ["静けさの中で、", "仕事に集中する。"],
-    description: "オフィスの中で着席し、作業へ移るまでの距離感と使い心地を映像で確認できます。",
-    hlsSrc: "/assets/video/hls/focus/index.m3u8",
-    poster: "/assets/video/spd01-focus-textfree-v1-poster.webp",
+    description: "使用イメージの映像を追加するためのスロットです。映像は後日公開予定です。",
+    hlsSrc: null,
   },
-] as const;
+];
 
 function ProductFilmSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -755,14 +763,15 @@ function ProductFilmSection() {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return undefined;
+    const streamSource = activeFilm.hlsSrc;
+    if (!video || !streamSource) return undefined;
 
     let disposed = false;
     let hlsInstance: import("hls.js").default | null = null;
 
     const loadStream = async () => {
       if (video.canPlayType("application/vnd.apple.mpegurl")) {
-        video.src = activeFilm.hlsSrc;
+        video.src = streamSource;
         video.load();
         return;
       }
@@ -777,7 +786,7 @@ function ProductFilmSection() {
           startLevel: -1,
         });
         hlsInstance = instance;
-        instance.loadSource(activeFilm.hlsSrc);
+        instance.loadSource(streamSource);
         instance.attachMedia(video);
         instance.on(Hls.Events.ERROR, (_event, data) => {
           if (data.fatal) instance.destroy();
@@ -832,18 +841,28 @@ function ProductFilmSection() {
             <h2 id="product-film-title">{activeFilm.title[0]}<br />{activeFilm.title[1]}</h2>
             <p id="product-film-description">{activeFilm.description}</p>
           </figcaption>
-          <video
-            ref={videoRef}
-            controls
-            playsInline
-            preload="metadata"
-            poster={activeFilm.poster}
-            aria-describedby="product-film-description"
-            data-stream-source={activeFilm.hlsSrc}
-          >
-            お使いのブラウザーでは動画を再生できません。
-            <a href={activeFilm.hlsSrc}>HLS製品映像を開く</a>
-          </video>
+          {activeFilm.hlsSrc ? (
+            <video
+              ref={videoRef}
+              controls
+              playsInline
+              preload="metadata"
+              poster={activeFilm.poster}
+              aria-describedby="product-film-description"
+              data-stream-source={activeFilm.hlsSrc}
+            >
+              お使いのブラウザーでは動画を再生できません。
+              <a href={activeFilm.hlsSrc}>HLS製品映像を開く</a>
+            </video>
+          ) : (
+            <div className="product-film-placeholder" role="status" aria-live="polite">
+              <div className="product-film-placeholder-card">
+                <span>VIDEO SLOT {activeFilm.index}</span>
+                <strong>映像準備中</strong>
+                <p>{activeFilm.label}の映像を追加するための領域です。</p>
+              </div>
+            </div>
+          )}
           <div className="product-film-selector" role="group" aria-label="製品映像を選択">
             {productFilms.map((film, index) => (
               <button
