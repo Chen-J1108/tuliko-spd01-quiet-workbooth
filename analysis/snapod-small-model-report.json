@@ -1,0 +1,33 @@
+{
+  "source": "D:\\桌面\\new project\\杭州嘉兴静音仓SNAPOD\\杭州嘉兴静音仓SNAPOD\\002 SNAPOD 左开门（可拆钢板+加门樘+底部通风）\\Snapod(小号)静音仓-W1000D1000H2300-总装 - 门樘-固定桌板-常规线路-可拆侧板.stp",
+  "output": "D:\\New project 2\\snapod-animejs-clone\\public\\assets\\models\\snapod-small.glb",
+  "sourceBytes": 13644955,
+  "outputBytes": 8138884,
+  "meshCount": 242,
+  "vertexCount": 265087,
+  "triangleCount": 266547,
+  "glassMeshCount": 6,
+  "sidePanelCount": 2,
+  "outputSizeMillimeters": [
+    1048.1029052734375,
+    2319.60009765625,
+    1000
+  ],
+  "materialCount": 7,
+  "materialKindCounts": {
+    "frame": 228,
+    "floor": 2,
+    "ceiling": 3,
+    "felt": 2,
+    "sage": 2,
+    "glass": 6,
+    "desk": 1
+  },
+  "tessellation": {
+    "linearUnit": "millimeter",
+    "linearDeflectionType": "bounding_box_ratio",
+    "linearDeflection": 0.002,
+    "angularDeflection": 0.5
+  },
+  "durationSeconds": 15.41
+}

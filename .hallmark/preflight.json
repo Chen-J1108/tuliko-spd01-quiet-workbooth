@@ -1,0 +1,16 @@
+{
+  "date": "2026-08-22",
+  "project": "snapod-animejs-clone",
+  "framework": "Vite 6 + React 19 + TypeScript",
+  "styling": "native CSS with tokens.css",
+  "fonts": ["DINish", "Berkeley Mono", "Yu Gothic fallback"],
+  "palette": "warm carbon / paper white / safety red / acoustic sage",
+  "motion": "Anime.js 4.5.0 + Three.js; reduced-motion and visibility pause present",
+  "assets": "authoritative local WebP product layer and STEP-derived optimized GLB",
+  "preserved": [
+    "single global progress rail",
+    "scroll-bound semantic 3D chapters",
+    "deterministic structure explosion and live callout targets",
+    "real Anime.js draggable spring interaction"
+  ]
+}
