@@ -1588,6 +1588,10 @@ main {
 .structure-section {
   /* Preserve the exploded inspection beat without leaving an assembled tail. */
   --chapter-scroll-height: 250lvh;
+  /* The chapter progress completes one viewport before the following section
+     would normally reach the sticky origin. Overlap that unused runway while
+     retaining a short 12lvh assembled-product breath before acoustic copy. */
+  margin-bottom: -88lvh;
 }
 
 .acoustic-section {

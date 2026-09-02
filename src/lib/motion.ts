@@ -128,10 +128,23 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
         ? 1 - smoothstep(rangeProgress(progress, 0.24, 0.38))
         : 0;
       section.style.setProperty("--hero-copy-visibility", heroCopyVisibility.toFixed(5));
-      const copyIn = smoothstep(rangeProgress(progress, 0.06, 0.18));
+      // Acoustic copy starts during the section handoff, because its assembled
+      // product state is already established by the structure reassembly. This
+      // removes the empty assembled-product hold without shortening either the
+      // exploded inspection or the acoustic comparison itself.
+      const isAcousticSection = section.id === "acoustic";
+      const copyIn = smoothstep(rangeProgress(
+        progress,
+        isAcousticSection ? -0.025 : 0.06,
+        isAcousticSection ? 0.04 : 0.18,
+      ));
       const contentProgress = director.snapshot.reducedMotion
         ? 1
-        : smoothstep(rangeProgress(progress, 0.035, 0.22));
+        : smoothstep(rangeProgress(
+            progress,
+            isAcousticSection ? -0.045 : 0.035,
+            isAcousticSection ? 0.07 : 0.22,
+          ));
       section.style.setProperty("--chapter-content-progress", contentProgress.toFixed(5));
       // Copy remains anchored to the product through the whole chapter. This
       // follows the reference site's continuous stage logic: the object changes
