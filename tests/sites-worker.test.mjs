@@ -18,6 +18,23 @@ test("serves existing static assets without a fallback", async () => {
   assert.deepEqual(calls, ["/assets/app.js"]);
 });
 
+test("serves HLS playlists and segments with streaming media types", async () => {
+  const assets = {
+    fetch: async () => new Response("stream", { status: 200 }),
+  };
+  const playlist = await worker.fetch(
+    new Request("https://example.test/assets/video/hls/space/index.m3u8"),
+    { ASSETS: assets },
+  );
+  const segment = await worker.fetch(
+    new Request("https://example.test/assets/video/hls/space/segment-000.ts"),
+    { ASSETS: assets },
+  );
+
+  assert.equal(playlist.headers.get("content-type"), "application/vnd.apple.mpegurl");
+  assert.equal(segment.headers.get("content-type"), "video/mp2t");
+});
+
 test("falls back to index.html for an unknown app route", async () => {
   const calls = [];
   const response = await worker.fetch(

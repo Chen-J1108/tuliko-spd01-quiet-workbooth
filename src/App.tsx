@@ -723,7 +723,8 @@ const productFilms = [
     duration: "05 SEC",
     title: ["設置空間で見る、", "SPD01。"],
     description: "実際のオフィスに置いたときの大きさと内部空間を、映像で確認できます。",
-    src: "/assets/video/spd01-office-textfree-v3.mp4",
+    hlsSrc: "/assets/video/hls/space/index.m3u8",
+    fallbackSrc: "/assets/video/spd01-office-textfree-v3.mp4",
     poster: "/assets/video/spd01-office-textfree-v3-poster.webp",
   },
   {
@@ -733,7 +734,8 @@ const productFilms = [
     duration: "05 SEC",
     title: ["構造を、", "動きで見る。"],
     description: "天板、フレーム、ガラス、外装パネルが分かれていく順序から、組み替え式の構造を確認できます。",
-    src: "/assets/video/spd01-structure-textfree-v1.mp4",
+    hlsSrc: "/assets/video/hls/structure/index.m3u8",
+    fallbackSrc: "/assets/video/spd01-structure-textfree-v1.mp4",
     poster: "/assets/video/spd01-structure-textfree-v1-poster.webp",
   },
   {
@@ -743,7 +745,8 @@ const productFilms = [
     duration: "10 SEC",
     title: ["静けさの中で、", "仕事に集中する。"],
     description: "オフィスの中で着席し、作業へ移るまでの距離感と使い心地を映像で確認できます。",
-    src: "/assets/video/spd01-focus-textfree-v1.mp4",
+    hlsSrc: "/assets/video/hls/focus/index.m3u8",
+    fallbackSrc: "/assets/video/spd01-focus-textfree-v1.mp4",
     poster: "/assets/video/spd01-focus-textfree-v1-poster.webp",
   },
 ] as const;
@@ -757,7 +760,61 @@ function ProductFilmSection() {
     const video = videoRef.current;
     if (!video) return undefined;
 
-    video.load();
+    let disposed = false;
+    let hlsInstance: import("hls.js").default | null = null;
+
+    const loadFallback = () => {
+      if (disposed) return;
+      hlsInstance?.destroy();
+      hlsInstance = null;
+      video.src = activeFilm.fallbackSrc;
+      video.load();
+    };
+
+    const loadStream = async () => {
+      if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = activeFilm.hlsSrc;
+        video.load();
+        return;
+      }
+
+      try {
+        const { default: Hls } = await import("hls.js");
+        if (disposed) return;
+        if (!Hls.isSupported()) {
+          loadFallback();
+          return;
+        }
+
+        const instance = new Hls({
+          enableWorker: true,
+          startLevel: -1,
+        });
+        hlsInstance = instance;
+        instance.loadSource(activeFilm.hlsSrc);
+        instance.attachMedia(video);
+        instance.on(Hls.Events.ERROR, (_event, data) => {
+          if (data.fatal) loadFallback();
+        });
+      } catch {
+        loadFallback();
+      }
+    };
+
+    void loadStream();
+
+    return () => {
+      disposed = true;
+      hlsInstance?.destroy();
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+    };
+  }, [activeFilm.fallbackSrc, activeFilm.hlsSrc]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return undefined;
 
     const pauseWhenHidden = () => {
       if (document.hidden) video.pause();
@@ -775,7 +832,7 @@ function ProductFilmSection() {
       document.removeEventListener("visibilitychange", pauseWhenHidden);
       video.pause();
     };
-  }, [activeFilm.src]);
+  }, []);
 
   return (
     <section
@@ -798,10 +855,10 @@ function ProductFilmSection() {
             preload="metadata"
             poster={activeFilm.poster}
             aria-describedby="product-film-description"
+            data-stream-source={activeFilm.hlsSrc}
           >
-            <source src={activeFilm.src} type="video/mp4" />
             お使いのブラウザーでは動画を再生できません。
-            <a href={activeFilm.src}>製品映像を開く</a>
+            <a href={activeFilm.hlsSrc}>HLS製品映像を開く</a>
           </video>
           <div className="product-film-selector" role="group" aria-label="製品映像を選択">
             {productFilms.map((film, index) => (
