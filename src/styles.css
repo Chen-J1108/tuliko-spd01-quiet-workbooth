@@ -2390,6 +2390,15 @@ main {
   pointer-events: none;
 }
 
+.product-film-eyebrow {
+  margin: 0 0 14px !important;
+  color: var(--accent) !important;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem !important;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
 .product-film-caption h2 {
   margin: 0;
   max-width: 440px;
@@ -2408,6 +2417,75 @@ main {
   color: var(--text-soft);
   font-size: clamp(0.8125rem, 1vw, 1rem);
   line-height: 1.58;
+}
+
+.product-film-selector {
+  position: absolute;
+  z-index: 5;
+  right: clamp(24px, 5vw, 92px);
+  bottom: clamp(76px, 9svh, 108px);
+  width: min(248px, 22vw);
+  display: grid;
+  gap: 6px;
+}
+
+.product-film-selector button {
+  appearance: none;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgb(var(--rgb-paper) / 0.12);
+  border-radius: 2px;
+  color: var(--text-soft);
+  background: rgb(var(--rgb-shadow) / 0.5);
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.product-film-selector button:hover,
+.product-film-selector button:focus-visible {
+  border-color: rgb(var(--rgb-paper) / 0.38);
+  color: var(--text);
+}
+
+.product-film-selector button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.product-film-selector button.is-active {
+  border-color: var(--accent);
+  color: var(--text);
+  background: rgb(var(--rgb-shadow) / 0.76);
+}
+
+.product-film-selector-index,
+.product-film-selector-duration {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+}
+
+.product-film-selector-index {
+  color: var(--accent);
+}
+
+.product-film-selector-label {
+  overflow: hidden;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.product-film-selector-duration {
+  color: var(--text-muted);
 }
 
 .product-sku-section {
@@ -3862,6 +3940,28 @@ main {
 
   .product-film-caption h2 {
     font-size: clamp(2rem, 8.7vw, 2.75rem);
+  }
+
+  .product-film-selector {
+    left: 16px;
+    right: 16px;
+    bottom: 64px;
+    width: auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .product-film-selector button {
+    min-width: 0;
+    padding: 9px 8px;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .product-film-selector-duration {
+    display: none;
+  }
+
+  .product-film-selector-label {
+    font-size: 0.6875rem;
   }
 
   .product-sku-section {

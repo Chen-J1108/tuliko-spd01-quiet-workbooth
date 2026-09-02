@@ -715,12 +715,49 @@ function VideoPrelude({ onActiveChange }: { onActiveChange: (active: boolean) =>
   );
 }
 
+const productFilms = [
+  {
+    id: "space",
+    index: "01",
+    label: "設置空間",
+    duration: "05 SEC",
+    title: ["設置空間で見る、", "SPD01。"],
+    description: "実際のオフィスに置いたときの大きさと内部空間を、映像で確認できます。",
+    src: "/assets/video/spd01-office-textfree-v3.mp4",
+    poster: "/assets/video/spd01-office-textfree-v3-poster.webp",
+  },
+  {
+    id: "structure",
+    index: "02",
+    label: "構造",
+    duration: "05 SEC",
+    title: ["構造を、", "動きで見る。"],
+    description: "天板、フレーム、ガラス、外装パネルが分かれていく順序から、組み替え式の構造を確認できます。",
+    src: "/assets/video/spd01-structure-textfree-v1.mp4",
+    poster: "/assets/video/spd01-structure-textfree-v1-poster.webp",
+  },
+  {
+    id: "focus",
+    index: "03",
+    label: "使用イメージ",
+    duration: "10 SEC",
+    title: ["静けさの中で、", "仕事に集中する。"],
+    description: "オフィスの中で着席し、作業へ移るまでの距離感と使い心地を映像で確認できます。",
+    src: "/assets/video/spd01-focus-textfree-v1.mp4",
+    poster: "/assets/video/spd01-focus-textfree-v1-poster.webp",
+  },
+] as const;
+
 function ProductFilmSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [activeFilmIndex, setActiveFilmIndex] = useState(0);
+  const activeFilm = productFilms[activeFilmIndex];
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return undefined;
+
+    video.load();
 
     const pauseWhenHidden = () => {
       if (document.hidden) video.pause();
@@ -738,7 +775,7 @@ function ProductFilmSection() {
       document.removeEventListener("visibilitychange", pauseWhenHidden);
       video.pause();
     };
-  }, []);
+  }, [activeFilm.src]);
 
   return (
     <section
@@ -750,21 +787,37 @@ function ProductFilmSection() {
       <figure className="product-film">
         <div className="product-film-media">
           <figcaption className="product-film-caption">
-            <h2 id="product-film-title">設置空間で見る、<br />SPD01。</h2>
-            <p id="product-film-description">実際のオフィスに置いたときの大きさと内部空間を、映像で確認できます。</p>
+            <p className="product-film-eyebrow">FILM {activeFilm.index} / {String(productFilms.length).padStart(2, "0")}</p>
+            <h2 id="product-film-title">{activeFilm.title[0]}<br />{activeFilm.title[1]}</h2>
+            <p id="product-film-description">{activeFilm.description}</p>
           </figcaption>
           <video
             ref={videoRef}
             controls
             playsInline
             preload="metadata"
-            poster="/assets/video/spd01-office-textfree-v3-poster.webp"
+            poster={activeFilm.poster}
             aria-describedby="product-film-description"
           >
-            <source src="/assets/video/spd01-office-textfree-v3.mp4" type="video/mp4" />
+            <source src={activeFilm.src} type="video/mp4" />
             お使いのブラウザーでは動画を再生できません。
-            <a href="/assets/video/spd01-office-textfree-v3.mp4">製品映像を開く</a>
+            <a href={activeFilm.src}>製品映像を開く</a>
           </video>
+          <div className="product-film-selector" role="group" aria-label="製品映像を選択">
+            {productFilms.map((film, index) => (
+              <button
+                className={index === activeFilmIndex ? "is-active" : ""}
+                type="button"
+                key={film.id}
+                onClick={() => setActiveFilmIndex(index)}
+                aria-pressed={index === activeFilmIndex}
+              >
+                <span className="product-film-selector-index">{film.index}</span>
+                <span className="product-film-selector-label">{film.label}</span>
+                <span className="product-film-selector-duration">{film.duration}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </figure>
     </section>
