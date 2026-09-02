@@ -758,12 +758,12 @@ function ProductFilmSection() {
             controls
             playsInline
             preload="metadata"
-            poster="/assets/video/spd01-structure-v5-poster.webp"
+            poster="/assets/video/spd01-office-third-person-v2-poster.webp"
             aria-describedby="product-film-description"
           >
-            <source src="/assets/video/spd01-structure-locked-v5.mp4" type="video/mp4" />
+            <source src="/assets/video/spd01-office-third-person-v2.mp4" type="video/mp4" />
             お使いのブラウザーでは動画を再生できません。
-            <a href="/assets/video/spd01-structure-locked-v5.mp4">製品映像を開く</a>
+            <a href="/assets/video/spd01-office-third-person-v2.mp4">製品映像を開く</a>
           </video>
         </div>
       </figure>
