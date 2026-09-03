@@ -57,6 +57,31 @@ test("all core pages expose a consultation route", async () => {
   }
 });
 
+test("homepage and static pages expose the shared decision path", async () => {
+  const appSource = await readFile(path.join(root, "src", "App.tsx"), "utf8");
+  assert.match(appSource, /function HomeGuideSection/);
+  assert.match(appSource, /function HomeFlowSection/);
+  assert.ok(
+    appSource.indexOf("<HomeGuideSection />") < appSource.indexOf("<ProductSkuSection"),
+    "needs guidance should precede the full product lineup",
+  );
+  assert.ok(
+    appSource.indexOf("<ProductSkuSection") < appSource.indexOf("<HomeFlowSection />"),
+    "adoption flow should follow product selection",
+  );
+
+  for (const relativePath of pagePaths.slice(1)) {
+    const source = await readFile(path.join(root, "dist", "client", relativePath), "utf8");
+    assert.match(source, /class="site-nav site-nav-desktop"/, relativePath + " lacks the shared navigation");
+    assert.match(source, /class="site-footer-main"/, relativePath + " lacks the shared footer");
+    assert.match(source, /aria-current="page"/, relativePath + " lacks a current-page marker");
+  }
+
+  const newsSource = await readFile(path.join(root, "dist", "client", "news", "index.html"), "utf8");
+  assert.match(newsSource, /イベント・更新/);
+  assert.match(newsSource, /開催予定/);
+});
+
 test("fresh homepage loads open with video while TOP remains the product overview", async () => {
   const [entrySource, appSource] = await Promise.all([
     readFile(path.join(root, "src", "main.tsx"), "utf8"),

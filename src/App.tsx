@@ -78,10 +78,10 @@ const chapterSignals = {
 const BRAND_NAME = "Tuliko";
 const BRAND_LOGO_SRC = "/assets/brand/tuliko-logo.png";
 const sitePages = [
-  { href: "/about/", label: "Tulikoについて" },
-  { href: "/business/", label: "製品・事業" },
-  { href: "/cases/", label: "配置検討例" },
-  { href: "/news/", label: "更新情報" },
+  { href: "/business/", label: "製品" },
+  { href: "/cases/", label: "配置検討" },
+  { href: "/news/", label: "イベント・更新" },
+  { href: "/about/", label: "会社情報" },
   { href: "/contact/", label: "お問い合わせ" },
 ] as const;
 
@@ -926,6 +926,92 @@ function CompanyProfile() {
   );
 }
 
+const homeNeeds = [
+  {
+    index: "01",
+    title: "周囲を気にせず、Web会議をしたい。",
+    body: "一人で使う製品と、扉・デスク・照明の位置関係を確認できます。",
+    href: "/#interaction",
+    link: "使い方を見る",
+  },
+  {
+    index: "02",
+    title: "短時間でも、集中できる場所がほしい。",
+    body: "製品の外観、構造、固定ガラスまわりの考え方を順に確認できます。",
+    href: "/#structure",
+    link: "構造を見る",
+  },
+  {
+    index: "03",
+    title: "人数と用途から、製品を比べたい。",
+    body: "一人用からミーティング向けまで、掲載中の9つのSKUを比較できます。",
+    href: "/business/",
+    link: "製品一覧を見る",
+  },
+] as const;
+
+function HomeGuideSection() {
+  return (
+    <section className="post-story-section home-guide-section" id="home-guide" aria-labelledby="home-guide-title">
+      <div className="home-guide-heading">
+        <p className="post-section-index">課題から探す</p>
+        <h2 id="home-guide-title">必要な静けさから、<br />次の情報へ。</h2>
+        <p>製品を見るだけで終わらず、用途、配置、確認資料、相談まで迷わず進める構成に整理しました。</p>
+      </div>
+      <div className="home-need-grid">
+        {homeNeeds.map((need) => (
+          <article className="home-need-card" key={need.index}>
+            <span>{need.index}</span>
+            <h3>{need.title}</h3>
+            <p>{need.body}</p>
+            <a href={need.href}>{need.link} <ArrowUpRight weight="bold" /></a>
+          </article>
+        ))}
+      </div>
+      <nav className="home-route-grid" aria-label="サイトの主なページ">
+        <a href="/business/"><span>01</span><strong>製品</strong><small>9つのSKUと掲載色</small></a>
+        <a href="/cases/"><span>02</span><strong>配置検討</strong><small>空間と動線の考え方</small></a>
+        <a href="/news/"><span>03</span><strong>イベント・更新</strong><small>開催予定と公開記録</small></a>
+        <a href="/about/"><span>04</span><strong>会社情報</strong><small>Tulikoの考え方と確認資料</small></a>
+      </nav>
+    </section>
+  );
+}
+
+function HomeFlowSection() {
+  const steps = [
+    ["01", "ご相談", "用途、人数、設置場所を共有。"],
+    ["02", "製品選定", "SKU、色、必要な確認事項を整理。"],
+    ["03", "配置確認", "搬入経路、電源、扉まわりを確認。"],
+    ["04", "計画確定", "見積、納期、設置条件を個別にご案内。"],
+  ] as const;
+
+  return (
+    <section className="post-story-section home-flow-section" id="adoption-flow" aria-labelledby="home-flow-title">
+      <div className="home-flow-layout">
+        <div className="home-flow-copy">
+          <p className="post-section-index">導入までの流れ</p>
+          <h2 id="home-flow-title">相談から設置計画まで、<br />順番を明確に。</h2>
+          <p>未確定の項目があっても、現在分かっている条件から整理できます。</p>
+          <a className="home-flow-cta" href="#consultation">導入を相談する <ArrowUpRight weight="bold" /></a>
+        </div>
+        <ol className="home-flow-steps">
+          {steps.map(([index, title, body]) => (
+            <li key={index}><span>{index}</span><div><h3>{title}</h3><p>{body}</p></div></li>
+          ))}
+        </ol>
+      </div>
+      <div className="home-update-strip">
+        <div><span>最新の更新</span><time dateTime="2026-09-03">2026.09.03</time></div>
+        <a href="/news/">
+          <strong>SPD01の構造情報を、提供GLBに合わせて更新しました。</strong>
+          <small>イベント・更新情報を見る <ArrowUpRight weight="bold" /></small>
+        </a>
+      </div>
+    </section>
+  );
+}
+
 function SiteFooter() {
   return (
     <footer className="site-footer-rich" id="site-footer" aria-label="フッター">
@@ -956,10 +1042,10 @@ function SiteFooter() {
           <h3>ご案内</h3>
           <div className="footer-guide-links">
             <a href="#consultation">導入相談</a>
-            <a href="/about/">Tulikoについて</a>
-            <a href="/business/">製品・事業</a>
-            <a href="/cases/">配置検討例</a>
-            <a href="/news/">更新情報</a>
+            <a href="/business/">製品</a>
+            <a href="/cases/">配置検討</a>
+            <a href="/news/">イベント・更新</a>
+            <a href="/about/">会社情報</a>
             <a href="/contact/">お問い合わせ</a>
           </div>
         </nav>
@@ -1570,7 +1656,9 @@ export function App() {
         </section>
 
         <ProductFilmSection />
+        <HomeGuideSection />
         <ProductSkuSection selection={productSelection} onSelect={setProductSelection} />
+        <HomeFlowSection />
         <ConsultationSection selection={productSelection} />
       </main>
 

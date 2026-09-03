@@ -1,5 +1,7 @@
 # Prototype Instructions
 
+The 2026-09-03 Soundbox-reference refinement transfers information architecture only: lead with a clear promise and consultation route, then move through user needs, product advantages, product selection, adoption flow, updates, company evidence, and contact. Preserve Tuliko's dark quiet-industrial identity, video-first home entry, and model-led 3D narrative; never copy the reference site's assets, wording, product claims, or visual styling. Static product, placement, event/update, company, and contact pages share one header/footer system and publish only verified facts, with unconfirmed company details kept as explicit Japanese placeholders.
+
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 
 Before making substantial visual changes, use the Product Design plugin's `get-context` skill when the visual source is unclear or no longer matches the current goal. When the user gives durable prototype-specific design feedback, preferences, or decisions, record them in `AGENTS.md`.
