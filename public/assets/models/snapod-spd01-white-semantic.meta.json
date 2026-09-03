@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-09-03",
+  "manifestId": "SNAPOD-S-WHITE-SEMANTIC-v1",
+  "sourceFile": "Snapod(小号)白色静音仓.glb",
+  "sourceSha256": "414654d6c767139f90f25105688c84d37fcae9d6a2369b6927f7d472b54c24f0",
+  "sourceBytes": 18231044,
+  "outputFile": "snapod-spd01-white-semantic.glb",
+  "outputSha256": "7bbc089a1fe18a7cb495305373b2d909360e91bfd250532d475db25edcc3368d",
+  "outputBytes": 1380308,
+  "dimensionsMeters": [
+    1.0481,
+    2.3196,
+    1
+  ],
+  "sourceParts": 252,
+  "renderMeshes": 265,
+  "semanticReference": "snapod-spd01-authoritative.glb",
+  "semanticReferenceSha256": "69061509da4d078878b6fca822affa9a3306b1a7b14fa549243c682d5d4ab0ba",
+  "semanticMapping": {
+    "exactBounds": 190,
+    "nearBounds": 212,
+    "inferredBounds": 40,
+    "method": "90-degree orientation correction followed by deterministic center, bounds and topology matching"
+  },
+  "modules": [
+    { "id": "base", "partCount": 42 },
+    { "id": "frame-core", "partCount": 4 },
+    { "id": "rear-wall", "partCount": 69 },
+    { "id": "service-wall", "partCount": 40 },
+    { "id": "fixed-glass", "partCount": 16 },
+    { "id": "roof", "partCount": 41 },
+    { "id": "door-jamb", "partCount": 8 },
+    { "id": "door-leaf", "partCount": 27 },
+    { "id": "column-covers", "partCount": 4 },
+    { "id": "carpet", "partCount": 1 }
+  ],
+  "materialRepairs": {
+    "glassParts": 2,
+    "hardwareParts": 16,
+    "runtimeFinish": "SPD01 grey-green product reference"
+  },
+  "compression": {
+    "method": "EXT_meshopt_compression",
+    "geometrySimplified": false,
+    "sourceReductionPercent": 92.43
+  }
+}

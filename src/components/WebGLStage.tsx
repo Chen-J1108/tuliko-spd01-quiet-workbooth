@@ -37,7 +37,7 @@ import {
   type StructureGuideTarget,
 } from "../structure-guides";
 
-const MODEL_URL = "/assets/models/snapod-spd01-authoritative.glb?v=20260819-1";
+const MODEL_URL = "/assets/models/snapod-spd01-white-semantic.glb?v=20260903-1";
 const PRODUCT_BOUNDARY_SIGNS = [-0.5, 0.5] as const;
 const HERO_BACKGROUND = new Color(0x0c0f0e);
 const STORY_BACKGROUND = new Color(0x131816);
