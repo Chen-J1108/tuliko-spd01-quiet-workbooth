@@ -5,15 +5,21 @@ import "./styles.css";
 
 const normalizedPath = window.location.pathname.replace(/\/index\.html$/, "").replace(/\/+$/, "");
 const isBrandStoryRoute = normalizedPath === "/about";
+const isProductHomeRoute = normalizedPath === "";
+const isVideoFirstEntry = isProductHomeRoute
+  && (!window.location.hash || window.location.hash === "#hero");
 
-// The unadorned product URL is the cinematic entry. Browser scroll
-// restoration must not skip past it on a first visit or reload. In-page TOP
-// links deliberately use #hero, which remains the separate product overview.
-if (!isBrandStoryRoute && !window.location.hash) {
+// Every fresh home-page load begins with the cinematic prelude. Older shared
+// links may still end in #hero, so remove that hash only during document boot;
+// later in-page TOP and logo links keep using #hero for the product overview.
+if (isVideoFirstEntry) {
   if ("scrollRestoration" in window.history) {
     window.history.scrollRestoration = "manual";
   }
-  const resetVideoEntry = () => window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  if (window.location.hash === "#hero") {
+    window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}`);
+  }
+  const resetVideoEntry = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   resetVideoEntry();
   window.addEventListener("pageshow", resetVideoEntry, { once: true });
 }

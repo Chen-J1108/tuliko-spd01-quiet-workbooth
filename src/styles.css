@@ -1510,6 +1510,12 @@ main {
   text-decoration-color: currentColor;
 }
 
+.video-prelude-paths .video-prelude-primary {
+  color: var(--color-ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+}
+
 .video-prelude-controls {
   position: absolute;
   z-index: 4;

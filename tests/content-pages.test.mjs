@@ -56,3 +56,19 @@ test("all core pages expose a consultation route", async () => {
     assert.match(source, /href="\/#consultation"|href="mailto:/i, `${relativePath} lacks a consultation route`);
   }
 });
+
+test("fresh homepage loads open with video while TOP remains the product overview", async () => {
+  const [entrySource, appSource] = await Promise.all([
+    readFile(path.join(root, "src", "main.tsx"), "utf8"),
+    readFile(path.join(root, "src", "App.tsx"), "utf8"),
+  ]);
+
+  assert.match(entrySource, /window\.location\.hash === "#hero"/);
+  assert.match(entrySource, /window\.history\.replaceState/);
+  assert.ok(
+    appSource.indexOf("<VideoPrelude") < appSource.indexOf('id="hero"'),
+    "video prelude must precede the product overview",
+  );
+  assert.match(appSource, /className="video-prelude-primary" href="#hero">製品を見る<\/a>/);
+  assert.match(appSource, /className="brand" href="#hero"/);
+});

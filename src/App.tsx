@@ -584,7 +584,13 @@ function ChapterSignalFacts({ facts }: { facts: readonly { label: string; value:
   );
 }
 
-function VideoPrelude({ onActiveChange }: { onActiveChange: (active: boolean) => void }) {
+function VideoPrelude({
+  ready,
+  onActiveChange,
+}: {
+  ready: boolean;
+  onActiveChange: (active: boolean) => void;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const userPausedRef = useRef(false);
@@ -601,7 +607,7 @@ function VideoPrelude({ onActiveChange }: { onActiveChange: (active: boolean) =>
 
     const syncPlayingState = () => setIsPlaying(!video.paused && !video.ended);
     const playWhenAllowed = () => {
-      if (reduceMotion || document.hidden || !shouldAutoPlay || userPausedRef.current || !video.muted) return;
+      if (!ready || reduceMotion || document.hidden || !shouldAutoPlay || userPausedRef.current || !video.muted) return;
       void video.play().catch(() => setIsPlaying(false));
     };
     const handleVisibility = () => {
@@ -621,6 +627,11 @@ function VideoPrelude({ onActiveChange }: { onActiveChange: (active: boolean) =>
     video.addEventListener("pause", syncPlayingState);
     video.addEventListener("ended", syncPlayingState);
     document.addEventListener("visibilitychange", handleVisibility);
+    if (!ready) {
+      video.pause();
+      video.currentTime = 0;
+      setIsPlaying(false);
+    }
     observer.observe(section);
 
     return () => {
@@ -631,7 +642,7 @@ function VideoPrelude({ onActiveChange }: { onActiveChange: (active: boolean) =>
       video.removeEventListener("ended", syncPlayingState);
       video.pause();
     };
-  }, [onActiveChange]);
+  }, [onActiveChange, ready]);
 
   const togglePlayback = () => {
     const video = videoRef.current;
@@ -684,6 +695,7 @@ function VideoPrelude({ onActiveChange }: { onActiveChange: (active: boolean) =>
             オフィスの喧騒から静音ブースへ。音の変化：オフィス環境音 → ブース内の静かな状態。
           </p>
           <nav className="video-prelude-paths" aria-label="製品情報へのショートカット">
+            <a className="video-prelude-primary" href="#hero">製品を見る</a>
             <a href="#structure">構造を見る</a>
             <a href="#product-skus">製品を選ぶ</a>
             <a href="#consultation">導入相談</a>
@@ -1441,7 +1453,7 @@ export function App() {
       <Header onRouteChange={handleRouteChange} />
 
       <main id="main-content">
-        <VideoPrelude onActiveChange={setVideoIntroActive} />
+        <VideoPrelude ready={loadingComplete} onActiveChange={setVideoIntroActive} />
         <section
           className="story-section hero-section"
           id="hero"
