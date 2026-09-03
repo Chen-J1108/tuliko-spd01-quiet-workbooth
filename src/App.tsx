@@ -44,9 +44,9 @@ const chapterSignals = {
   structure: {
     ...chapterSequence.structure,
     facts: [
-      { label: "主要部品", value: "10点" },
-      { label: "組立", value: "順序" },
-      { label: "確認", value: "360°確認" },
+      { label: "GLB外形", value: "W1048×D1000×H2320" },
+      { label: "CAD構成", value: "252要素" },
+      { label: "表示分類", value: "10区分" },
     ],
   },
   acoustic: {
@@ -89,16 +89,16 @@ const partLabels = [
   // Reference-inspired technical labels attach to the nearest clear side of
   // the live component envelope. Their leaders stay horizontal, never pass
   // through the assembly, and follow the deterministic GLB projection.
-  { index: "01", id: "roof", name: "天板", x: 83, y: 18, anchor: "right", offset: -12, cue: 0.32, orbitCue: 0.765, orbitAnchor: "right", edgeSource: "roof", fallback: [73, 10] },
-  { index: "02", id: "base", name: "底座", x: 42, y: 90, anchor: "left", offset: -9, cue: 0.425, edgeSource: "base", fallback: [39, 75] },
-  { index: "03", id: "columns", name: "支柱", x: 69, y: 60, anchor: "right", offset: -16, cue: 0.365, edgeSource: "acousticPanel", fallback: [73, 40] },
-  { index: "04", id: "sidePanel", name: "側板", x: 69, y: 65, anchor: "right", offset: -18, cue: 0.335, orbitCue: 0.605, orbitAnchor: "right", edgeSource: "sidePanel", fallback: [73, 48] },
-  { index: "05", id: "frontDoor", name: "前扉", x: 43, y: 70, anchor: "left", offset: 9, cue: 0.395, edgeSource: "sidePanel", fallback: [39, 49] },
+  { index: "01", id: "roof", name: "天板ユニット", x: 83, y: 18, anchor: "right", offset: -12, cue: 0.32, orbitCue: 0.765, orbitAnchor: "right", edgeSource: "roof", fallback: [73, 10] },
+  { index: "02", id: "base", name: "ベース", x: 42, y: 90, anchor: "left", offset: -9, cue: 0.425, edgeSource: "base", fallback: [39, 75] },
+  { index: "03", id: "columns", name: "コーナーフレーム", x: 69, y: 60, anchor: "right", offset: -16, cue: 0.365, edgeSource: "acousticPanel", fallback: [73, 40] },
+  { index: "04", id: "sidePanel", name: "外装パネル", x: 69, y: 65, anchor: "right", offset: -18, cue: 0.335, orbitCue: 0.605, orbitAnchor: "right", edgeSource: "sidePanel", fallback: [73, 48] },
+  { index: "05", id: "frontDoor", name: "ドアユニット", x: 43, y: 70, anchor: "left", offset: 9, cue: 0.395, edgeSource: "sidePanel", fallback: [39, 49] },
   { index: "06", id: "fixedGlass", name: "固定ガラス", x: 56.5, y: 30, anchor: "right", offset: 10, cue: 0.38, orbitCue: 0.715, orbitAnchor: "right", edgeSource: "acousticPanel", fallback: [73, 48] },
-  { index: "07", id: "acousticPanel", name: "吸音内板", x: 30, y: 42, anchor: "left", offset: 38, cue: 0.41, orbitCue: 0.665, orbitAnchor: "right", edgeSource: "sidePanel", fallback: [39, 50] },
+  { index: "07", id: "acousticPanel", name: "内装パネル", x: 30, y: 42, anchor: "left", offset: 38, cue: 0.41, orbitCue: 0.665, orbitAnchor: "right", edgeSource: "sidePanel", fallback: [39, 50] },
   { index: "08", id: "desk", name: "デスク", x: 30, y: 80, anchor: "left", offset: -13, cue: 0.44, edgeSource: "sidePanel", fallback: [39, 50] },
-  { index: "09", id: "carpet", name: "床カーペット", x: 38, y: 85, anchor: "left", offset: 9, cue: 0.455, edgeSource: "carpet", fallback: [39, 78] },
-  { index: "10", id: "lighting", name: "照明", x: 83, y: 12, anchor: "right", offset: 10, cue: 0.47, edgeSource: "roof", fallback: [73, 8] },
+  { index: "09", id: "carpet", name: "フロアマット", x: 38, y: 85, anchor: "left", offset: 9, cue: 0.455, edgeSource: "carpet", fallback: [39, 78] },
+  { index: "10", id: "lighting", name: "天井照明", x: 83, y: 12, anchor: "right", offset: 10, cue: 0.47, edgeSource: "roof", fallback: [73, 8] },
 ] as const;
 
 const incomingWaves = [
@@ -1489,14 +1489,17 @@ export function App() {
           <div className="section-sticky chapter-layout chapter-left">
             <div className="chapter-copy">
               <ChapterSignal {...chapterSignals.structure} />
-              <h2 id="structure-title">一つずつ、<br />理由のある構造。</h2>
+              <h2 id="structure-title">252の要素を、<br />10の役割へ。</h2>
               <p className="chapter-summary">
-                <strong>10の主要部品を、役割ごとに分解。</strong>
-                <span>天板、ガラス、吸音面、家具の構成と関係を見せます。</span>
+                <strong>製品モデルの実形状を、役割ごとに分解表示。</strong>
+                <span>天板、ベース、骨格、外装、扉、固定ガラス、内装、デスク、床材、照明の位置関係を確認できます。</span>
               </p>
               <ChapterSignalFacts facts={chapterSignals.structure.facts} />
+              <p className="chapter-evidence structure-model-note">
+                ※外形はGLBの外接寸法をmm換算。設置余白は含みません。
+              </p>
             </div>
-            <div className="part-legend" aria-label="製品部品一覧">
+            <div className="part-legend" aria-label="GLB表示分類10区分">
               {partLabels.map((part) => <span key={part.name}>{part.name}</span>)}
             </div>
           </div>

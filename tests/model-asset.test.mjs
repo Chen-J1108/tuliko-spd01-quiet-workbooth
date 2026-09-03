@@ -12,6 +12,14 @@ const modelPath = path.join(
   "models",
   "snapod-spd01-white-semantic.glb",
 );
+const modelMetadataPath = path.join(
+  projectRoot,
+  "public",
+  "assets",
+  "models",
+  "snapod-spd01-white-semantic.meta.json",
+);
+const appSourcePath = path.join(projectRoot, "src", "App.tsx");
 
 function readGlbJson(filePath) {
   const bytes = fs.readFileSync(filePath);
@@ -55,4 +63,16 @@ test("the production SPD01 model retains glass and hardware material roles", () 
   assert.ok(materialNames.includes("SNAPOD_BlackHardware"));
   assert.ok(json.extensionsUsed.includes("KHR_materials_transmission"));
   assert.ok(json.extensionsUsed.includes("KHR_materials_volume"));
+});
+
+test("the structure chapter reports the supplied GLB dimensions and composition", () => {
+  const metadata = JSON.parse(fs.readFileSync(modelMetadataPath, "utf8"));
+  const appSource = fs.readFileSync(appSourcePath, "utf8");
+
+  assert.deepEqual(metadata.dimensionsMeters, [1.0481, 2.3196, 1]);
+  assert.equal(metadata.sourceParts, 252);
+  assert.equal(metadata.modules.length, 10);
+  assert.match(appSource, /W1048×D1000×H2320/);
+  assert.match(appSource, /252要素/);
+  assert.match(appSource, /10区分/);
 });

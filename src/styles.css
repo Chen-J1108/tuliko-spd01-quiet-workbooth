@@ -1137,6 +1137,22 @@ a {
   font-size: clamp(14px, 1vw, 16px);
 }
 
+.structure-section .chapter-copy > .structure-model-note {
+  --model-note-reveal: clamp(0, calc((var(--chapter-content-progress) - 0.52) * 5), 1);
+  margin-top: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.55;
+  opacity: var(--model-note-reveal);
+  transform: translate3d(0, calc((1 - var(--model-note-reveal)) * 8px), 0);
+}
+
+.structure-section .chapter-facts dd {
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
 .acoustic-section .chapter-copy {
   width: min(32vw, 390px);
 }
