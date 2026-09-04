@@ -1,10 +1,12 @@
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { BrandStoryPage } from "./BrandStoryPage";
+import { BrandNarrativePage } from "./BrandNarrativePage";
 import "./styles.css";
 
 const normalizedPath = window.location.pathname.replace(/\/index\.html$/, "").replace(/\/+$/, "");
 const isBrandStoryRoute = normalizedPath === "/about";
+const isBrandNarrativeRoute = normalizedPath === "/story";
 const isProductHomeRoute = normalizedPath === "";
 const isVideoFirstEntry = isProductHomeRoute
   && (!window.location.hash || window.location.hash === "#hero");
@@ -28,4 +30,4 @@ const root = document.getElementById("root");
 
 if (!root) throw new Error("Missing #root mount element");
 
-createRoot(root).render(isBrandStoryRoute ? <BrandStoryPage /> : <App />);
+createRoot(root).render(isBrandNarrativeRoute ? <BrandNarrativePage /> : isBrandStoryRoute ? <BrandStoryPage /> : <App />);

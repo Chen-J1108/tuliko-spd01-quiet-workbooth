@@ -1,0 +1,15 @@
+{
+  "model": "doubao-seedance-2-5-260628",
+  "endpoint": "ep-20260826120024-lhwd6",
+  "modality": "video",
+  "task_type": "reference",
+  "source_image": "public/assets/brand-story/configuration-current-concept-v2.webp",
+  "prompt_file": "video-output/brand-story-configuration-seedance25-480p-16x9/prompt.txt",
+  "resolution": "480p",
+  "ratio": "16:9",
+  "duration_seconds": 5,
+  "generate_audio": true,
+  "output_format": "mp4",
+  "watermark": false,
+  "return_last_frame": true
+}

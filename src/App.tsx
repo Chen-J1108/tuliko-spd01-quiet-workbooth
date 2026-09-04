@@ -81,6 +81,7 @@ const BRAND_LOGO_SRC = "/assets/brand/tuliko-logo.png";
 const sitePages = [
   { href: "/business/", label: "製品" },
   { href: "/cases/", label: "配置検討" },
+  { href: "/story/", label: "ブランドストーリー" },
   { href: "/news/", label: "イベント・更新" },
   { href: "/about/", label: "会社情報" },
   { href: "/contact/", label: "お問い合わせ" },

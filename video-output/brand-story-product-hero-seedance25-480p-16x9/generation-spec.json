@@ -1,0 +1,17 @@
+{
+  "model": "doubao-seedance-2-5-260628",
+  "endpoint": "ep-20260826120024-lhwd6",
+  "modality": "video",
+  "task_type": "first_frame",
+  "source_image": "public/assets/video/spd01-product-poster.png",
+  "source_dimensions": "854x480",
+  "prompt_file": "video-output/brand-story-product-hero-seedance25-480p-16x9/prompt.txt",
+  "resolution": "480p",
+  "ratio_request": "adaptive",
+  "expected_output_ratio": "16:9 (follows the 854x480 first frame)",
+  "duration_seconds": 5,
+  "generate_audio": true,
+  "output_format": "mp4",
+  "watermark": false,
+  "return_last_frame": true
+}

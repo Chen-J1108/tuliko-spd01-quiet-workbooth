@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         main: resolve(projectRoot, "index.html"),
         about: resolve(projectRoot, "about/index.html"),
+        story: resolve(projectRoot, "story/index.html"),
       },
     },
   },

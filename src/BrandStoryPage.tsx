@@ -9,6 +9,7 @@ const navigation = [
   { href: "/about/", label: "Tulikoについて" },
   { href: "/business/", label: "製品・事業" },
   { href: "/cases/", label: "配置検討例" },
+  { href: "/story/", label: "ブランドストーリー" },
   { href: "/news/", label: "更新情報" },
   { href: "/contact/", label: "お問い合わせ" },
 ] as const;
