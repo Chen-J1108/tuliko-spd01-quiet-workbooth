@@ -1,5 +1,6 @@
 import { type FormEvent, type MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  ArrowDown,
   ArrowUpRight,
   List,
   Pause,
@@ -584,6 +585,33 @@ function ChapterSignalFacts({ facts }: { facts: readonly { label: string; value:
   );
 }
 
+function NextQuestion({
+  href,
+  label,
+  question,
+  detail,
+  placement = "inline",
+}: {
+  href: string;
+  label: string;
+  question: string;
+  detail: string;
+  placement?: "inline" | "film" | "wide";
+}) {
+  return (
+    <a
+      className={`next-question next-question--${placement}`}
+      href={href}
+      aria-label={`次へ：${question}`}
+    >
+      <span className="next-question-label">次に確かめる <i>{label}</i></span>
+      <strong>{question}</strong>
+      <span className="next-question-detail">{detail}</span>
+      <ArrowDown weight="bold" aria-hidden="true" />
+    </a>
+  );
+}
+
 function VideoPrelude({
   ready,
   onActiveChange,
@@ -843,7 +871,7 @@ function ProductFilmSection() {
     <section
       className="post-story-section product-film-section"
       id="product-film"
-      data-next-target="product-skus"
+      data-next-target="home-guide"
       aria-labelledby="product-film-title"
     >
       <figure className="product-film">
@@ -892,6 +920,13 @@ function ProductFilmSection() {
           </div>
         </div>
       </figure>
+      <NextQuestion
+        placement="film"
+        href="#home-guide"
+        label="用途"
+        question="自分たちに必要な静けさは？"
+        detail="映像の印象を、実際の使い方に置き換えます。"
+      />
     </section>
   );
 }
@@ -952,7 +987,7 @@ const homeNeeds = [
 
 function HomeGuideSection() {
   return (
-    <section className="post-story-section home-guide-section" id="home-guide" aria-labelledby="home-guide-title">
+    <section className="post-story-section home-guide-section" id="home-guide" data-next-target="product-skus" aria-labelledby="home-guide-title">
       <div className="home-guide-heading">
         <p className="post-section-index">課題から探す</p>
         <h2 id="home-guide-title">必要な静けさから、<br />次の情報へ。</h2>
@@ -974,6 +1009,13 @@ function HomeGuideSection() {
         <a href="/news/"><span>03</span><strong>イベント・更新</strong><small>開催予定と公開記録</small></a>
         <a href="/about/"><span>04</span><strong>会社情報</strong><small>Tulikoの考え方と確認資料</small></a>
       </nav>
+      <NextQuestion
+        placement="wide"
+        href="#product-skus"
+        label="製品選定"
+        question="人数と用途に合うSKUは？"
+        detail="課題が見えたら、9つの候補を同じ基準で比べます。"
+      />
     </section>
   );
 }
@@ -987,7 +1029,7 @@ function HomeFlowSection() {
   ] as const;
 
   return (
-    <section className="post-story-section home-flow-section" id="adoption-flow" aria-labelledby="home-flow-title">
+    <section className="post-story-section home-flow-section" id="adoption-flow" data-next-target="consultation" aria-labelledby="home-flow-title">
       <div className="home-flow-layout">
         <div className="home-flow-copy">
           <p className="post-section-index">導入までの流れ</p>
@@ -1008,6 +1050,13 @@ function HomeFlowSection() {
           <small>イベント・更新情報を見る <ArrowUpRight weight="bold" /></small>
         </a>
       </div>
+      <NextQuestion
+        placement="wide"
+        href="#consultation"
+        label="導入相談"
+        question="この空間では、何から決める？"
+        detail="未確定の条件も含めて、相談内容を整理できます。"
+      />
     </section>
   );
 }
@@ -1218,7 +1267,7 @@ function ProductSkuSection({ selection, onSelect }: ProductSkuSectionProps) {
     <section
       className="post-story-section product-sku-section"
       id="product-skus"
-      data-next-target="consultation"
+      data-next-target="adoption-flow"
       aria-labelledby="product-sku-title"
     >
       <div className="product-sku-copy">
@@ -1234,6 +1283,12 @@ function ProductSkuSection({ selection, onSelect }: ProductSkuSectionProps) {
             <span>掲載画像 {String(selectedIndex + 1).padStart(2, "0")} / {String(productSkus.length).padStart(2, "0")}</span>
           </small>
         </div>
+        <NextQuestion
+          href="#adoption-flow"
+          label="導入手順"
+          question="選んだ後は、何を確認する？"
+          detail="配置、搬入、見積までの順番を確認します。"
+        />
       </div>
 
       <div className="product-sku-viewer">
@@ -1561,6 +1616,12 @@ export function App() {
                 <span><small>定員</small><strong>1人用</strong></span>
                 <span><small>構成</small><strong>組み替え式</strong></span>
               </div>
+              <NextQuestion
+                href="#structure"
+                label="構造"
+                question="252の要素は、どう役割に分かれる？"
+                detail="外観の次は、内部の成り立ちへ。"
+              />
             </div>
           </div>
         </section>
@@ -1584,6 +1645,12 @@ export function App() {
               <p className="chapter-evidence structure-model-note">
                 ※外形はGLBの外接寸法をmm換算。設置余白は含みません。
               </p>
+              <NextQuestion
+                href="#acoustic"
+                label="遮音"
+                question="組み上がった構造は、音をどう受け止める？"
+                detail="次は、固定ガラス前後の変化を比べます。"
+              />
             </div>
             <div className="part-legend" aria-label="GLB表示分類10区分">
               {partLabels.map((part) => <span key={part.name}>{part.name}</span>)}
@@ -1611,6 +1678,12 @@ export function App() {
                 <a href="/about/#about-evidence">試験条件と報告原本を見る</a>
               </p>
               <ChapterSignalFacts facts={chapterSignals.acoustic.facts} />
+              <NextQuestion
+                href="#modular"
+                label="構成"
+                question="静けさを保ちながら、組み替えられる？"
+                detail="遮音の次は、変化に応える構成へ。"
+              />
             </div>
           </div>
         </section>
@@ -1631,6 +1704,12 @@ export function App() {
                 <span>移設やレイアウト変更にも順序を保って対応します。</span>
               </p>
               <ChapterSignalFacts facts={chapterSignals.modular.facts} />
+              <NextQuestion
+                href="#interaction"
+                label="使用"
+                question="実際には、どこに触れて使う？"
+                detail="扉、デスク、照明を正面から確認します。"
+              />
             </div>
           </div>
         </section>
@@ -1651,6 +1730,12 @@ export function App() {
                 <span>入室から着席、作業までの動線をひと目で確かめられます。</span>
               </p>
               <ChapterSignalFacts facts={chapterSignals.interaction.facts} />
+              <NextQuestion
+                href="#product-film"
+                label="設置空間"
+                question="オフィスに置くと、どう見える？"
+                detail="3Dの理解を、空間のスケールへつなぎます。"
+              />
             </div>
           </div>
         </section>

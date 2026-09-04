@@ -1762,6 +1762,80 @@ main {
   letter-spacing: 0.045em;
 }
 
+.next-question {
+  width: min(450px, 100%);
+  min-height: 62px;
+  margin-top: clamp(16px, 2.4lvh, 24px);
+  padding: 12px 34px 10px 0;
+  box-sizing: border-box;
+  position: relative;
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid color-mix(in oklch, var(--text-soft) 34%, transparent);
+  color: var(--text);
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.next-question::before {
+  content: "";
+  position: absolute;
+  inset: -1px auto auto 0;
+  width: 34px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.next-question-label,
+.next-question-detail {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.075em;
+}
+
+.next-question-label i {
+  margin-inline-start: 7px;
+  color: var(--accent);
+  font-style: normal;
+}
+
+.next-question > strong {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 680;
+  line-height: 1.45;
+}
+
+.next-question > svg {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 4px;
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+  transform: translateY(-50%);
+  transition: transform var(--dur-short) var(--ease-out);
+}
+
+.next-question:is(:hover, :focus-visible) > svg {
+  transform: translateY(calc(-50% + 2px));
+}
+
+.next-question:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.story-section .next-question {
+  pointer-events: none;
+}
+
+.story-section.is-active .next-question {
+  pointer-events: auto;
+}
+
 .drag-point:disabled {
   opacity: 0.55;
   cursor: not-allowed;
@@ -2320,6 +2394,27 @@ main {
   background: linear-gradient(180deg, transparent, rgb(var(--rgb-ink) / 0.11));
   opacity: var(--section-tease, 0);
   pointer-events: none;
+}
+
+.next-question--film {
+  position: absolute;
+  z-index: 6;
+  inset-inline-start: clamp(24px, 5vw, 92px);
+  inset-block-end: clamp(18px, 2.5svh, 30px);
+  width: min(450px, calc(100vw - 48px));
+  margin: 0;
+  padding-inline-start: 14px;
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-panel);
+}
+
+.next-question--film::before {
+  inset-inline-start: 14px;
+}
+
+.next-question--wide {
+  width: min(620px, 100%);
+  margin-top: clamp(38px, 5vw, 64px);
 }
 
 .post-section-index {

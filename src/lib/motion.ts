@@ -265,7 +265,14 @@ export function initMotionSystem(root: HTMLElement, director: SceneDirector) {
     root.style.setProperty("--stage-center-x", `${stageCenter.toFixed(3)}%`);
     syncHeroProductBoundary();
 
-    sections.forEach((section, index) => section.classList.toggle("is-active", index === nextIndex));
+    sections.forEach((section, index) => {
+      const isActive = index === nextIndex;
+      section.classList.toggle("is-active", isActive);
+      // Overlapping sticky chapters may remain in the DOM while transparent.
+      // Keep their links out of keyboard and pointer navigation until the
+      // matching chapter is the readable one.
+      section.inert = !isActive;
+    });
     progressAnchors.forEach((anchor, index) => {
       const weight = index === baseIndex
         ? 1 - transitionProgress

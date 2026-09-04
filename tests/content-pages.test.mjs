@@ -105,3 +105,29 @@ test("fresh homepage loads open with video while TOP remains the product overvie
   assert.match(appSource, /className="video-prelude-primary" href="#hero">製品を見る<\/a>/);
   assert.match(appSource, /className="brand" href="#hero"/);
 });
+
+test("homepage continuation cues follow the real decision sequence", async () => {
+  const [appSource, motionSource] = await Promise.all([
+    readFile(path.join(root, "src", "App.tsx"), "utf8"),
+    readFile(path.join(root, "src", "lib", "motion.ts"), "utf8"),
+  ]);
+  const routePairs = [
+    ["hero", "structure"],
+    ["structure", "acoustic"],
+    ["acoustic", "modular"],
+    ["modular", "interaction"],
+    ["interaction", "product-film"],
+    ["product-film", "home-guide"],
+    ["home-guide", "product-skus"],
+    ["product-skus", "adoption-flow"],
+    ["adoption-flow", "consultation"],
+  ];
+
+  assert.match(appSource, /function NextQuestion/);
+  assert.match(appSource, /次に確かめる/);
+  assert.match(motionSource, /section\.inert = !isActive/);
+  for (const [sectionId, nextId] of routePairs) {
+    const sectionPattern = new RegExp(`id="${sectionId}"[\\s\\S]{0,180}data-next-target="${nextId}"`);
+    assert.match(appSource, sectionPattern, `${sectionId} should hand off to ${nextId}`);
+  }
+});
