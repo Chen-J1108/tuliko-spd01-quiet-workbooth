@@ -20,6 +20,8 @@ const modelMetadataPath = path.join(
   "snapod-spd01-white-semantic.meta.json",
 );
 const appSourcePath = path.join(projectRoot, "src", "App.tsx");
+const stageSourcePath = path.join(projectRoot, "src", "components", "WebGLStage.tsx");
+const preparationSourcePath = path.join(projectRoot, "scripts", "prepare-snapod-glb.mjs");
 
 function readGlbJson(filePath) {
   const bytes = fs.readFileSync(filePath);
@@ -75,4 +77,21 @@ test("the structure chapter reports the supplied GLB dimensions and composition"
   assert.match(appSource, /W1048×D1000×H2320/);
   assert.match(appSource, /252要素/);
   assert.match(appSource, /10区分/);
+  assert.match(appSource, /提供された製品分解図に準拠/);
+});
+
+test("the exploded presentation follows the supplied product-render order", () => {
+  const metadata = JSON.parse(fs.readFileSync(modelMetadataPath, "utf8"));
+  const stageSource = fs.readFileSync(stageSourcePath, "utf8");
+  const preparationSource = fs.readFileSync(preparationSourcePath, "utf8");
+
+  assert.equal(metadata.visualReferences.front, "绿色静音仓-正.png");
+  assert.equal(metadata.visualReferences.threeQuarter, "绿色静音仓-45度.png");
+  assert.equal(metadata.visualReferences.exploded, "绿色静音仓-爆炸图.png");
+  assert.match(stageSource, /"door-leaf": \[0, 0, 1\.08\]/);
+  assert.match(stageSource, /"service-wall": \[0, 0, 0\.38\]/);
+  assert.match(stageSource, /"fixed-glass": \[0, 0, -0\.42\]/);
+  assert.match(stageSource, /"rear-wall": \[0, 0, -0\.82\]/);
+  assert.doesNotMatch(stageSource, /declaredOffset/);
+  assert.match(preparationSource, /REFERENCE_EXPLOSION_OFFSETS\[moduleId\]/);
 });

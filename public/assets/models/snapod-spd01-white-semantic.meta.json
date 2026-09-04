@@ -1,5 +1,6 @@
 {
   "generatedAt": "2026-09-03",
+  "presentationUpdatedAt": "2026-09-04",
   "manifestId": "SNAPOD-S-WHITE-SEMANTIC-v1",
   "sourceFile": "Snapod(小号)白色静音仓.glb",
   "sourceSha256": "414654d6c767139f90f25105688c84d37fcae9d6a2369b6927f7d472b54c24f0",
@@ -38,6 +39,12 @@
     "glassParts": 2,
     "hardwareParts": 16,
     "runtimeFinish": "SPD01 grey-green product reference"
+  },
+  "visualReferences": {
+    "front": "绿色静音仓-正.png",
+    "threeQuarter": "绿色静音仓-45度.png",
+    "exploded": "绿色静音仓-爆炸图.png",
+    "presentationUse": "runtime material finish and exploded-part choreography"
   },
   "compression": {
     "method": "EXT_meshopt_compression",

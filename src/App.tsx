@@ -1643,7 +1643,7 @@ export function App() {
               </p>
               <ChapterSignalFacts facts={chapterSignals.structure.facts} />
               <p className="chapter-evidence structure-model-note">
-                ※外形はGLBの外接寸法をmm換算。設置余白は含みません。
+                ※外形はGLBの外接寸法をmm換算。設置余白は含みません。展開順は提供された製品分解図に準拠しています。
               </p>
               <NextQuestion
                 href="#acoustic"

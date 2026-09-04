@@ -28,6 +28,22 @@ const MODULE_ORDER = [
   "carpet",
 ];
 
+// Presentation offsets are authored against the imported GLB's local axes.
+// After the website applies the approved -90deg front yaw they reproduce the
+// supplied exploded-render order instead of sending the door/glass into depth.
+const REFERENCE_EXPLOSION_OFFSETS = {
+  roof: [0, 0.82, 0],
+  base: [0, -0.58, 0],
+  carpet: [0, -0.32, 0],
+  "rear-wall": [0, 0, -0.82],
+  "service-wall": [0, 0, 0.38],
+  "fixed-glass": [0, 0, -0.42],
+  "door-leaf": [0, 0, 1.08],
+  "door-jamb": [0, 0, 0.92],
+  "column-covers": [0, 0, 0.06],
+  "frame-core": [0, 0, 0],
+};
+
 function sha256(bytes) {
   return crypto.createHash("sha256").update(bytes).digest("hex");
 }
@@ -300,7 +316,7 @@ for (const moduleId of MODULE_ORDER) {
     extras: {
       moduleId,
       moduleLabel: definition.moduleLabel || moduleId,
-      explodeOffset: definition.explodeOffset,
+      explodeOffset: REFERENCE_EXPLOSION_OFFSETS[moduleId] || definition.explodeOffset,
     },
   }) - 1;
   semanticRootIndices.push(nodeIndex);

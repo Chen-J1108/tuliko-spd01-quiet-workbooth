@@ -70,15 +70,34 @@ interface WebGLStageProps {
 }
 
 const PRODUCT_FINISH = {
-  // SPD01 grey-green product reference: satin shell, near-black trim,
-  // neutral felt lining, soft-white worktop and a warm interior strip.
-  sage: new Color(0x8ea58f),
-  charcoal: new Color(0x1c201e),
-  graphite: new Color(0x323635),
-  textile: new Color(0x858784),
-  glass: new Color(0xd6e0dd),
-  desk: new Color(0xe4e3de),
+  // Sampled toward the supplied green front and 45-degree product renders:
+  // mint-grey satin shell, warm neutral lining, dark metal and clear glass.
+  sage: new Color(0x8daea1),
+  charcoal: new Color(0x242625),
+  graphite: new Color(0x363837),
+  textile: new Color(0xaaa7a4),
+  glass: new Color(0xe0e7e4),
+  desk: new Color(0xe9e6e0),
   light: new Color(0xfff2d9),
+};
+
+// The uploaded product folder includes a canonical exploded render. These
+// offsets recreate its readable left-to-right order after the model's -90deg
+// front yaw: door -> service lining -> core -> fixed glass -> rear shell.
+// Keeping the offsets in the runtime (instead of trusting older GLB extras)
+// also prevents broad panels from travelling only in depth and occluding the
+// complete assembly in the direct front inspection frame.
+const REFERENCE_EXPLOSION_OFFSETS: Record<string, readonly [number, number, number]> = {
+  roof: [0, 0.82, 0],
+  base: [0, -0.58, 0],
+  carpet: [0, -0.32, 0],
+  "rear-wall": [0, 0, -0.82],
+  "service-wall": [0, 0, 0.38],
+  "fixed-glass": [0, 0, -0.42],
+  "door-leaf": [0, 0, 1.08],
+  "door-jamb": [0, 0, 0.92],
+  "column-covers": [0, 0, 0.06],
+  "frame-core": [0, 0, 0],
 };
 
 function partKindForModule(moduleId: string): PartKind {
@@ -102,27 +121,8 @@ function partKindForModule(moduleId: string): PartKind {
 }
 
 function directionForModule(moduleId: string) {
-  switch (moduleId) {
-    case "roof":
-      return new Vector3(0, 0.78, 0);
-    case "base":
-    case "carpet":
-      return new Vector3(0, -0.38, 0.16);
-    case "rear-wall":
-      return new Vector3(0, 0, -0.76);
-    case "service-wall":
-      return new Vector3(0.68, 0.02, 0.34);
-    case "fixed-glass":
-      return new Vector3(-0.72, 0.02, 0.12);
-    case "door-leaf":
-      return new Vector3(-0.82, 0, -0.32);
-    case "door-jamb":
-      return new Vector3(-0.44, 0, -0.08);
-    case "column-covers":
-      return new Vector3(0.36, 0.08, 0.28);
-    default:
-      return new Vector3(0, 0.42, 0);
-  }
+  const offset = REFERENCE_EXPLOSION_OFFSETS[moduleId] ?? [0, 0, 0];
+  return new Vector3(...offset);
 }
 
 function isDeskSurface(bounds: Box3) {
@@ -174,20 +174,20 @@ function applyProductFinish(mesh: Mesh) {
     if (glassSurface) {
       const glass = material as MeshPhysicalMaterial;
       glass.color.copy(PRODUCT_FINISH.glass);
-      // Keep the glazing transparent and legible without exposing the broad
-      // rectangular panels from RoomEnvironment as vertical grey bands.
-      glass.roughness = 0.26;
+      // Match the supplied frontal render: the glass remains clearly present,
+      // while the desk and inner lining stay readable through it.
+      glass.roughness = 0.18;
       glass.metalness = 0;
-      glass.transmission = 0.98;
-      glass.opacity = 0.065;
+      glass.transmission = 0.86;
+      glass.opacity = 0.14;
       glass.transparent = true;
       glass.depthWrite = false;
       glass.side = DoubleSide;
-      glass.clearcoat = 0.12;
-      glass.clearcoatRoughness = 0.34;
+      glass.clearcoat = 0.18;
+      glass.clearcoatRoughness = 0.28;
       glass.ior = 1.45;
       glass.thickness = 0.008;
-      glass.envMapIntensity = 0.08;
+      glass.envMapIntensity = 0.14;
     } else if (ceilingLight) {
       material.color.copy(PRODUCT_FINISH.light);
       material.emissive.copy(PRODUCT_FINISH.light);
@@ -202,14 +202,14 @@ function applyProductFinish(mesh: Mesh) {
       material.envMapIntensity = 0.3;
     } else if (outerSkin || moduleId === "column-covers") {
       material.color.copy(PRODUCT_FINISH.sage);
-      material.roughness = 0.36;
+      material.roughness = 0.4;
       material.metalness = 0.04;
-      material.envMapIntensity = 0.3;
+      material.envMapIntensity = 0.32;
     } else if (innerSkin || fabricWall) {
       material.color.copy(PRODUCT_FINISH.textile);
-      material.roughness = 0.92;
+      material.roughness = 0.88;
       material.metalness = 0;
-      material.envMapIntensity = 0.06;
+      material.envMapIntensity = 0.1;
     } else if (moduleId === "carpet") {
       material.color.copy(PRODUCT_FINISH.graphite);
       material.roughness = 0.96;
@@ -221,10 +221,12 @@ function applyProductFinish(mesh: Mesh) {
       material.metalness = 0.38;
       material.envMapIntensity = 0.34;
     } else {
-      material.color.lerp(PRODUCT_FINISH.graphite, 0.5);
+      // Preserve more of the supplied GLB's own neutral surface variation so
+      // small switches, fittings and trim do not collapse into one dark mass.
+      material.color.lerp(PRODUCT_FINISH.graphite, 0.28);
       material.roughness = Math.max(material.roughness, 0.48);
       material.metalness = Math.min(material.metalness, 0.18);
-      material.envMapIntensity = 0.18;
+      material.envMapIntensity = 0.22;
     }
 
     material.needsUpdate = true;
@@ -485,14 +487,10 @@ export function WebGLStage({ director, onReady }: WebGLStageProps) {
           const moduleId = String(module.userData?.moduleId || "");
           if (!moduleId) return;
           modules.set(moduleId, module);
-          const declaredOffset = module.userData?.explodeOffset;
-          const direction = Array.isArray(declaredOffset)
-            ? new Vector3(...declaredOffset).multiplyScalar(1.12)
-            : directionForModule(moduleId);
           parts.push({
             object: module,
             base: module.position.clone(),
-            direction,
+            direction: directionForModule(moduleId),
             kind: partKindForModule(moduleId),
             moduleId,
           });
