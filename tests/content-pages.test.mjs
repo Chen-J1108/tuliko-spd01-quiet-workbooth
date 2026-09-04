@@ -58,7 +58,11 @@ test("all core pages expose a consultation route", async () => {
 });
 
 test("homepage and static pages expose the shared decision path", async () => {
-  const appSource = await readFile(path.join(root, "src", "App.tsx"), "utf8");
+  const [appSource, stylesSource, webglSource] = await Promise.all([
+    readFile(path.join(root, "src", "App.tsx"), "utf8"),
+    readFile(path.join(root, "src", "styles.css"), "utf8"),
+    readFile(path.join(root, "src", "components", "WebGLStage.tsx"), "utf8"),
+  ]);
   assert.match(appSource, /function HomeGuideSection/);
   assert.match(appSource, /function HomeFlowSection/);
   assert.ok(
@@ -80,6 +84,10 @@ test("homepage and static pages expose the shared decision path", async () => {
   const newsSource = await readFile(path.join(root, "dist", "client", "news", "index.html"), "utf8");
   assert.match(newsSource, /イベント・更新/);
   assert.match(newsSource, /開催予定/);
+  assert.match(stylesSource, /\.app\.is-post-story \.webgl-stage/);
+  assert.match(stylesSource, /visibility:\s*hidden/);
+  assert.match(webglSource, /postStoryPaused/);
+  assert.match(webglSource, /new MutationObserver/);
 });
 
 test("fresh homepage loads open with video while TOP remains the product overview", async () => {

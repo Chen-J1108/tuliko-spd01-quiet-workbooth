@@ -1,5 +1,7 @@
 # Prototype Instructions
 
+The 2026-09-04 post-story handoff makes the product film the end of the fixed WebGL theatre. From that threshold onward, the model canvas and technical overlay must fade completely, become hidden, and pause rendering; later needs, SKU, adoption-flow, consultation, and footer sections use opaque Tuliko surfaces. The adoption-flow background is CSS-only calibration drafting, never a raster image or a second model, and no product silhouette may show through its copy or dividers.
+
 The 2026-09-03 Soundbox-reference refinement transfers information architecture only: lead with a clear promise and consultation route, then move through user needs, product advantages, product selection, adoption flow, updates, company evidence, and contact. Preserve Tuliko's dark quiet-industrial identity, video-first home entry, and model-led 3D narrative; never copy the reference site's assets, wording, product claims, or visual styling. Static product, placement, event/update, company, and contact pages share one header/footer system and publish only verified facts, with unconfirmed company details kept as explicit Japanese placeholders.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.

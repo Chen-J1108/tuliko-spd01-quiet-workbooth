@@ -371,6 +371,8 @@ export function WebGLStage({ director, onReady }: WebGLStageProps) {
     let disposed = false;
     let animationFrame = 0;
     let lastCompactFrame = 0;
+    const appRoot = mount.closest<HTMLElement>("#app-story");
+    let postStoryPaused = appRoot?.classList.contains("is-post-story") ?? false;
     let product: Group | null = null;
     let productBackdrop: Mesh | null = null;
     let productSize = new Vector3(1.0481, 2.3196, 1);
@@ -423,7 +425,6 @@ export function WebGLStage({ director, onReady }: WebGLStageProps) {
     const resize = () => {
       const width = Math.max(1, mount.clientWidth);
       const height = Math.max(1, mount.clientHeight);
-      const appRoot = mount.closest<HTMLElement>("#app-story");
       heroExtraShiftPx = appRoot
         ? Number.parseFloat(getComputedStyle(appRoot).getPropertyValue("--hero-extra-shift-x")) || 0
         : 0;
@@ -575,7 +576,7 @@ export function WebGLStage({ director, onReady }: WebGLStageProps) {
 
     const render = (time: number) => {
       animationFrame = 0;
-      if (disposed || !director.snapshot.visible) return;
+      if (disposed || !director.snapshot.visible || postStoryPaused) return;
       if (director.snapshot.compact && time - lastCompactFrame < 1000 / 40) {
         animationFrame = requestAnimationFrame(render);
         return;
@@ -838,23 +839,36 @@ export function WebGLStage({ director, onReady }: WebGLStageProps) {
       }
 
       renderer.render(scene, camera);
-      animationFrame = requestAnimationFrame(render);
+      if (!postStoryPaused) animationFrame = requestAnimationFrame(render);
     };
 
     const startOrStop = () => {
-      if (director.snapshot.visible && !animationFrame) animationFrame = requestAnimationFrame(render);
-      if (!director.snapshot.visible && animationFrame) {
+      const shouldRender = director.snapshot.visible && !postStoryPaused;
+      if (shouldRender && !animationFrame) animationFrame = requestAnimationFrame(render);
+      if (!shouldRender && animationFrame) {
         cancelAnimationFrame(animationFrame);
         animationFrame = 0;
       }
     };
 
+    const stageStateObserver = appRoot
+      ? new MutationObserver(() => {
+          postStoryPaused = appRoot.classList.contains("is-post-story");
+          startOrStop();
+        })
+      : null;
+    stageStateObserver?.observe(appRoot as HTMLElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
     const unsubscribe = director.subscribe(startOrStop);
-    animationFrame = requestAnimationFrame(render);
+    startOrStop();
 
     return () => {
       disposed = true;
       unsubscribe();
+      stageStateObserver?.disconnect();
       resizeObserver.disconnect();
       if (animationFrame) cancelAnimationFrame(animationFrame);
       if (product) disposeObject(product);
