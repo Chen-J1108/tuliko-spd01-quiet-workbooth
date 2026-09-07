@@ -43,3 +43,19 @@ test("story colors match the selected reference and motion can be reduced", asyn
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /@media \(max-width: 760px\)/);
 });
+
+test("birth chapter presents three existing products and scene choices without a carousel", async () => {
+  const source = await read("src/BrandNarrativePage.tsx");
+  const css = await read("src/brand-narrative.css");
+  const products = source.match(/const storyProducts = \[([\s\S]*?)\] as const/)[1];
+  assert.equal((products.match(/sku:/g) || []).length, 3);
+  for (const sku of ["SPD01", "SPD07", "SPD12"]) assert.ok(products.includes(sku));
+  for (const [, asset] of products.matchAll(/image: "([^"]+)"/g)) {
+    const bytes = await readFile(new URL(`dist/client${asset}`, root));
+    assert.equal(bytes.toString("ascii", 8, 12), "WEBP");
+  }
+  assert.match(source, /画像は同一縮尺ではありません/);
+  assert.match(source, /narrative-size-scenes/);
+  assert.match(css, /\.narrative-size-stage \{ display: grid; grid-template-columns: repeat\(3,minmax\(0,1fr\)\)/);
+  assert.doesNotMatch(source, /className="narrative-product-hero"/);
+});

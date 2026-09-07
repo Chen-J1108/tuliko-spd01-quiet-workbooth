@@ -30,6 +30,12 @@ const principles = [
   { title: "置いた後の毎日を考える。", body: "扉を開け、席に着き、仕事へ戻る。その繰り返しに無理がないかを、選び方の基準にする。" },
 ] as const;
 
+const storyProducts = [
+  { sku: "SPD01", format: "一人用", title: "ひとりで、集中する。", scene: "執務エリア・個人作業", text: "デスクのそばに、通話やオンライン会議、考えをまとめるための場所を。", image: "/assets/products/catalog-hq/spd01-grey-green.webp", alt: "コンパクトな一人用直線デスク仕様の SPD01" },
+  { sku: "SPD07", format: "二人用", title: "ふたりで、話を進める。", scene: "共有オフィス・面談", text: "短い相談や一対一の打ち合わせに。向き合って話すための余白をつくります。", image: "/assets/products/catalog-hq/spd07-shadow-grey.webp", alt: "二人が向かい合って座れるミーティング仕様の SPD07" },
+  { sku: "SPD12", format: "ミーティング", title: "チームで、考えを広げる。", scene: "チームエリア・打ち合わせ", text: "複数人での相談や共同作業に。会話を囲める、ゆとりのある空間を。", image: "/assets/products/catalog-hq/spd12-grey-green.webp", alt: "ソファとテーブルを備えた中型ミーティング仕様の SPD12" },
+] as const;
+
 function StoryArrow() { return <ArrowUpRight size={18} aria-hidden="true" />; }
 
 export function BrandNarrativePage() {
@@ -140,8 +146,18 @@ export function BrandNarrativePage() {
 
         <section className="narrative-birth narrative-paper" id="birth" aria-labelledby="birth-title">
           <div className="narrative-wrap narrative-birth-grid">
-            <figure className="narrative-product-hero"><img src="/assets/products/catalog-hq/spd01-grey-green.webp" alt="掲載製品 SPD01・灰緑色の一人用直線デスク仕様" loading="lazy" width="1000" height="1000" /><figcaption>現在の掲載製品：SPD01<br />創作ストーリー内の試作品ではありません</figcaption></figure>
-            <div className="narrative-copy"><p className="narrative-kicker">04 — ブランドの誕生</p><h2 id="birth-title">小さな余白に、<br />Tuliko という名前を。</h2><p>完成を急ぐより、使う場面に立ち返る。その試行錯誤の先で、森川は自分たちの目指す空間に Tuliko という名を置いた。</p><p>それは、オフィスから離れるための箱ではない。一本の電話を終え、ひとつの考えをまとめ、また周囲とつながるための小さな場所だった。</p><blockquote>静けさは、特別な誰かではなく、<br />働く一人ひとりのために。</blockquote><p className="narrative-scene-note">命名の場面は創作です。実際の名称由来・創業年を示すものではありません。</p></div>
+            <div><p className="narrative-kicker">04 — ブランドの誕生</p><h2 id="birth-title">小さな余白に、<br />Tuliko という名前を。</h2></div>
+            <div className="narrative-copy"><p>完成を急ぐより、使う場面に立ち返る。その試行錯誤の先で、森川は自分たちの目指す空間に Tuliko という名を置いた。</p><p>一本の電話から、ふたりの相談、チームの対話まで。必要な余白は、働く人と場所によって変わる。その考え方を、異なる大きさの空間へ。</p><p className="narrative-scene-note">命名の場面は創作です。実際の名称由来・創業年を示すものではありません。</p></div>
+          </div>
+          <div className="narrative-wrap narrative-size-showcase" id="story-products" aria-labelledby="sizes-title">
+            <div className="narrative-size-heading"><h3 id="sizes-title">三つの大きさ。<br />それぞれの、働く場所へ。</h3><p>ひとりの集中から、チームの会話まで。</p></div>
+            <div className="narrative-size-stage">
+              {storyProducts.map(product => <figure key={product.sku}><img src={product.image} alt={product.alt} loading="lazy" width="2368" height="2999" /><figcaption><strong>{product.sku}</strong><span>{product.format}</span></figcaption></figure>)}
+            </div>
+            <div className="narrative-size-scenes">
+              {storyProducts.map(product => <article key={product.sku}><p className="narrative-size-scene-label">{product.sku} / {product.scene}</p><h3>{product.title}</h3><p>{product.text}</p><a href={`/business/#lineup`} aria-label={`${product.sku} の掲載製品一覧を見る`}>製品一覧で見る <StoryArrow /></a></article>)}
+            </div>
+            <p className="narrative-size-note">現在の掲載製品を用途別に紹介しています。創作ストーリー内の試作品ではありません。画像は同一縮尺ではありません。寸法・定員・設置条件は、対象モデルごとにご確認ください。</p>
           </div>
           <div className="narrative-wrap narrative-story-path" aria-label="創作ストーリーの流れ"><span>物語の歩み<small>実際の企業年表ではありません</small></span><ol>{chapters.map(chapter => <li key={chapter.id}><a href={`#${chapter.id}`}><small>{chapter.number}</small>{chapter.label}</a></li>)}</ol></div>
         </section>

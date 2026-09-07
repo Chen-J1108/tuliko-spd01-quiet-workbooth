@@ -88,10 +88,27 @@
 .narrative-decisions p { margin-top: 17px; font-size: 14px; color: var(--n-dark-muted); }
 .narrative-decisions strong { display: block; font-size: 13px; margin-top: 21px; font-weight: 500; }
 .narrative-birth { padding-block: 100px 0; }
-.narrative-birth-grid { display: grid; grid-template-columns: 1fr 1.04fr; gap: 7%; align-items: center; }
-.narrative-product-hero { position: relative; padding: 45px 40px 25px; background: #e3e3dc; }
-.narrative-product-hero img { height: 500px; object-fit: contain; mix-blend-mode: multiply; }
-.narrative-product-hero figcaption { padding-top: 24px; border-top: 1px solid #c3c5bc; font-size: 11px; line-height: 1.8; color: var(--n-muted); }
+.narrative-birth-grid { display: grid; grid-template-columns: 1fr 1.04fr; gap: 7%; align-items: start; }
+.narrative-birth-grid h2 { margin-top: 25px; }
+.narrative-size-showcase { margin-top: 56px; scroll-margin-top: calc(var(--n-header-height) + 86px); }
+.narrative-size-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-top: 28px; border-top: 1px solid var(--n-line); }
+.narrative-size-heading h3 { font-size: 25px; line-height: 1.6; letter-spacing: -.04em; }
+.narrative-size-heading p { color: var(--n-muted); font-size: 13px; }
+.narrative-size-stage { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: 30px; background: #e3e3dc; }
+.narrative-size-stage figure { min-width: 0; padding: 24px 20px 20px; }
+.narrative-size-stage figure + figure { border-left: 1px solid var(--n-line); }
+.narrative-size-stage img { height: clamp(260px,29vw,400px); object-fit: contain; mix-blend-mode: multiply; }
+.narrative-size-stage figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-top: 18px; font-size: 12px; }
+.narrative-size-stage strong { font-family: "Berkeley Mono", monospace; font-size: 17px; font-weight: 400; }
+.narrative-size-stage figcaption span { color: var(--n-muted); }
+.narrative-size-scenes { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 40px; margin-top: 26px; }
+.narrative-size-scenes article { min-width: 0; display: flex; flex-direction: column; align-items: start; }
+.narrative-size-scenes h3 { margin: 16px 0 12px; font-size: 21px; line-height: 1.6; letter-spacing: -.04em; }
+.narrative-size-scenes p { font-size: 14px; color: var(--n-muted); }
+.narrative-size-scenes p.narrative-size-scene-label { font-size: 11px; }
+.narrative-size-scenes a { display: inline-flex; align-items: center; gap: 18px; min-height: 48px; padding-top: 14px; margin-top: auto; font-size: 12px; }
+.narrative-size-scenes a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.narrative-size-note { margin-top: 24px !important; padding-top: 20px; border-top: 1px solid var(--n-line); color: var(--n-muted); font-size: 11px; }
 .narrative-story-path { display: grid; grid-template-columns: 1fr 2fr; gap: 35px; align-items: center; border-top: 1px solid var(--n-line); border-bottom: 1px solid var(--n-line); margin-top: 72px; padding-block: 28px; }
 .narrative-story-path > span { font-size: 15px; }
 .narrative-story-path > span small { display: block; color: var(--n-muted); font-size: 11px; margin-top: 8px; }
@@ -179,9 +196,18 @@
   .narrative-decisions li { padding-block: 25px; gap: 10px; }
   .narrative-decisions h3 { font-size: 19px; }
   .narrative-birth { padding-top: 64px; }
-  .narrative-birth .narrative-copy { grid-row: 1; }
-  .narrative-product-hero { padding: 25px; }
-  .narrative-product-hero img { height: 370px; }
+  .narrative-size-showcase { margin-top: 36px; }
+  .narrative-size-heading { display: block; }
+  .narrative-size-heading h3 { font-size: 23px; }
+  .narrative-size-heading p { margin-top: 16px; }
+  .narrative-size-stage { margin-top: 24px; }
+  .narrative-size-stage figure { padding: 16px 6px 14px; }
+  .narrative-size-stage img { height: clamp(122px,35vw,230px); }
+  .narrative-size-stage figcaption { flex-direction: column; gap: 6px; align-items: center; font-size: 10px; margin-top: 10px; }
+  .narrative-size-stage strong { font-size: 13px; }
+  .narrative-size-scenes { grid-template-columns: 1fr; gap: 24px; }
+  .narrative-size-scenes article + article { border-top: 1px solid var(--n-line); padding-top: 24px; }
+  .narrative-size-scenes h3 { font-size: 20px; margin-top: 12px; }
   .narrative-story-path { margin-top: 40px; gap: 22px; }
   .narrative-story-path li { padding-left: 10px; }
   .narrative-story-path a { font-size: 11px; }
