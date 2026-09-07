@@ -1,0 +1,20 @@
+/* Shared UI palette. Product imagery and the red/green acoustic channels keep their own semantics. */
+:root {
+  --tk-bg: #101512;
+  --tk-deep: #0b100d;
+  --tk-panel: #1b241e;
+  --tk-raised: #27322b;
+  --tk-ink: #eff0e9;
+  --tk-body: #c3cabe;
+  --tk-muted: #a4afa3;
+  --tk-line: #38463c;
+  --tk-line-strong: #667660;
+  --tk-action: #b9cba9;
+  --tk-action-hover: #d4dfc9;
+  --tk-on-action: #172016;
+  --tk-focus: #e0e9d7;
+  --tk-media: #dce0d5;
+  --tk-media-ink: #243026;
+  --tk-media-body: #465341;
+  --tk-grid: rgb(185 203 169 / .045);
+}

@@ -1,19 +1,21 @@
+@import "./public/tuliko-palette.css";
+
 :root {
   color-scheme: dark;
 
   /* Quiet industrial palette: warm carbon, paper-white, safety red, acoustic sage. */
-  --color-paper: oklch(25.2% 0.006 62);
-  --color-paper-deep: oklch(21.8% 0.006 62);
-  --color-surface: oklch(28.7% 0.006 62);
-  --color-surface-raised: oklch(31.5% 0.007 62);
-  --color-ink: oklch(96.8% 0.006 68);
-  --color-ink-soft: oklch(79.8% 0.009 68);
-  --color-ink-muted: oklch(66.5% 0.009 68);
-  --color-rule: oklch(42% 0.008 62);
-  --color-rule-strong: oklch(55% 0.009 62);
-  --color-accent: oklch(66.5% 0.205 29);
-  --color-accent-hot: oklch(72.5% 0.175 39);
-  --color-focus: oklch(78% 0.148 48);
+  --color-paper: var(--tk-bg);
+  --color-paper-deep: var(--tk-deep);
+  --color-surface: var(--tk-panel);
+  --color-surface-raised: var(--tk-raised);
+  --color-ink: var(--tk-ink);
+  --color-ink-soft: var(--tk-body);
+  --color-ink-muted: var(--tk-muted);
+  --color-rule: var(--tk-line);
+  --color-rule-strong: var(--tk-line-strong);
+  --color-accent: var(--tk-action);
+  --color-accent-hot: var(--tk-action-hover);
+  --color-focus: var(--tk-focus);
   --color-sage: oklch(61.5% 0.055 153);
   --color-sage-light: oklch(83% 0.04 153);
   --color-wave-red-dark: oklch(61% 0.19 29);
@@ -27,8 +29,8 @@
   --mask-opaque: #000;
 
   /* Channel aliases allow tuned alpha values without off-system one-off colors. */
-  --rgb-paper: 37 36 35;
-  --rgb-ink: 246 244 242;
+  --rgb-paper: 16 21 18;
+  --rgb-ink: 239 240 233;
   --rgb-shadow: 0 0 0;
   --rgb-shadow-green: 17 22 21;
   --rgb-accent: 241 79 69;

@@ -1374,13 +1374,13 @@ a {
   padding-inline: 20px;
   border: 0;
   border-radius: var(--radius-sm);
-  color: var(--color-paper-deep);
-  background: var(--color-ink);
+  color: var(--tk-on-action);
+  background: var(--tk-action);
 }
 
 .site-header .header-cta:hover {
-  color: var(--color-paper-deep);
-  background: color-mix(in oklch, var(--color-ink) 90%, var(--color-accent));
+  color: var(--tk-on-action);
+  background: var(--tk-action-hover);
 }
 
 .site-header .header-cta svg,

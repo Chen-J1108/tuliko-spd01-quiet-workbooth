@@ -1,14 +1,14 @@
 .brand-story-page {
-  --story-bg: #0b0c0a;
-  --story-panel: #111210;
-  --story-panel-strong: #181917;
-  --story-ink: #f6f6f2;
-  --story-muted: #9b9d98;
-  --story-meta: #787a75;
-  --story-line: rgb(246 246 242 / 0.16);
-  --story-line-strong: rgb(246 246 242 / 0.32);
-  --story-grid: rgb(246 246 242 / 0.035);
-  --story-signal: #ff3b30;
+  --story-bg: var(--tk-bg);
+  --story-panel: var(--tk-panel);
+  --story-panel-strong: var(--tk-raised);
+  --story-ink: var(--tk-ink);
+  --story-muted: var(--tk-body);
+  --story-meta: var(--tk-muted);
+  --story-line: var(--tk-line);
+  --story-line-strong: var(--tk-line-strong);
+  --story-grid: var(--tk-grid);
+  --story-signal: var(--tk-action);
   --story-copy-rail: clamp(300px, 28vw, 372px);
   --story-stage-gap: clamp(12px, 1.5vw, 22px);
   --story-stage-edge: clamp(16px, 2vw, 30px);
@@ -79,11 +79,11 @@
 .brand-story-page .brand-story-header-cta {
   justify-content: center;
   padding: 0 17px;
-  border: 1px solid var(--story-ink);
-  color: var(--story-bg);
-  background: var(--story-ink);
+  border: 1px solid var(--tk-action);
+  color: var(--tk-on-action);
+  background: var(--tk-action);
 }
-.brand-story-page .brand-story-header-cta:hover { border-color: var(--story-signal); background: var(--story-signal); }
+.brand-story-page .brand-story-header-cta:hover { border-color: var(--tk-action-hover); background: var(--tk-action-hover); }
 
 .brand-story-chapter-rail {
   position: fixed;
